@@ -1,0 +1,24 @@
+{
+  "tones": [
+    {
+      "id": 0,
+      "name": "no tone"
+    },
+    {
+      "id": 1,
+      "name": "1st tone"
+    },
+    {
+      "id": 2,
+      "name": "2nd tone"
+    },
+    {
+      "id": 3,
+      "name": "3rd tone"
+    },
+    {
+      "id": 4,
+      "name": "4th tone"
+    }
+  ]
+}
