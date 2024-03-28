@@ -1,0 +1,753 @@
+{
+  "pinyins": [
+    {
+      "id": 0,
+      "name": "ā",
+      "initial_id": 0,
+      "final_id": 0,
+      "tone_id": 1
+    },
+    {
+      "id": 1,
+      "name": "āi",
+      "initial_id": 0,
+      "final_id": 1,
+      "tone_id": 1
+    },
+    {
+      "id": 2,
+      "name": "ái",
+      "initial_id": 0,
+      "final_id": 1,
+      "tone_id": 2
+    },
+    {
+      "id": 3,
+      "name": "ǎi",
+      "initial_id": 0,
+      "final_id": 1,
+      "tone_id": 3
+    },
+    {
+      "id": 4,
+      "name": "ài",
+      "initial_id": 0,
+      "final_id": 1,
+      "tone_id": 4
+    },
+    {
+      "id": 5,
+      "name": "ān",
+      "initial_id": 0,
+      "final_id": 2,
+      "tone_id": 1
+    },
+    {
+      "id": 6,
+      "name": "ǎn",
+      "initial_id": 0,
+      "final_id": 2,
+      "tone_id": 2
+    },
+    {
+      "id": 7,
+      "name": "àn",
+      "initial_id": 0,
+      "final_id": 2,
+      "tone_id": 3
+    },
+    {
+      "id": 8,
+      "name": "āng",
+      "initial_id": 0,
+      "final_id": 3,
+      "tone_id": 1
+    },
+    {
+      "id": 9,
+      "name": "áng",
+      "initial_id": 0,
+      "final_id": 3,
+      "tone_id": 2
+    },
+    {
+      "id": 10,
+      "name": "àng",
+      "initial_id": 0,
+      "final_id": 3,
+      "tone_id": 4
+    },
+    {
+      "id": 11,
+      "name": "āo",
+      "initial_id": 0,
+      "final_id": 4,
+      "tone_id": 1
+    },
+    {
+      "id": 12,
+      "name": "áo",
+      "initial_id": 0,
+      "final_id": 4,
+      "tone_id": 2
+    },
+    {
+      "id": 13,
+      "name": "ǎo",
+      "initial_id": 0,
+      "final_id": 4,
+      "tone_id": 3
+    },
+    {
+      "id": 14,
+      "name": "ào",
+      "initial_id": 0,
+      "final_id": 4,
+      "tone_id": 4
+    },
+    {
+      "id": 15,
+      "name": "ē",
+      "initial_id": 0,
+      "final_id": 5,
+      "tone_id": 1
+    },
+    {
+      "id": 16,
+      "name": "é",
+      "initial_id": 0,
+      "final_id": 5,
+      "tone_id": 2
+    },
+    {
+      "id": 17,
+      "name": "ě",
+      "initial_id": 0,
+      "final_id": 5,
+      "tone_id": 3
+    },
+    {
+      "id": 18,
+      "name": "è",
+      "initial_id": 0,
+      "final_id": 5,
+      "tone_id": 4
+    },
+    {
+      "id": 19,
+      "name": "ēi",
+      "initial_id": 0,
+      "final_id": 6,
+      "tone_id": 1
+    },
+    {
+      "id": 20,
+      "name": "ēn",
+      "initial_id": 0,
+      "final_id": 7,
+      "tone_id": 1
+    },
+    {
+      "id": 21,
+      "name": "èn",
+      "initial_id": 0,
+      "final_id": 7,
+      "tone_id": 4
+    },
+    {
+      "id": 22,
+      "name": "ér",
+      "initial_id": 0,
+      "final_id": 8,
+      "tone_id": 2
+    },
+    {
+      "id": 23,
+      "name": "ěr",
+      "initial_id": 0,
+      "final_id": 8,
+      "tone_id": 3
+    },
+    {
+      "id": 24,
+      "name": "èr",
+      "initial_id": 0,
+      "final_id": 8,
+      "tone_id": 4
+    },
+    {
+      "id": 25,
+      "name": "yī",
+      "initial_id": 0,
+      "final_id": 9,
+      "tone_id": 1
+    },
+    {
+      "id": 26,
+      "name": "yí",
+      "initial_id": 0,
+      "final_id": 9,
+      "tone_id": 2
+    },
+    {
+      "id": 27,
+      "name": "yǐ",
+      "initial_id": 0,
+      "final_id": 9,
+      "tone_id": 3
+    },
+    {
+      "id": 28,
+      "name": "yì",
+      "initial_id": 0,
+      "final_id": 9,
+      "tone_id": 4
+    },
+    {
+      "id": 29,
+      "name": "ya",
+      "initial_id": 0,
+      "final_id": 10,
+      "tone_id": 0
+    },
+    {
+      "id": 30,
+      "name": "yā",
+      "initial_id": 0,
+      "final_id": 10,
+      "tone_id": 1
+    },
+    {
+      "id": 31,
+      "name": "yá",
+      "initial_id": 0,
+      "final_id": 10,
+      "tone_id": 2
+    },
+    {
+      "id": 32,
+      "name": "yǎ",
+      "initial_id": 0,
+      "final_id": 10,
+      "tone_id": 3
+    },
+    {
+      "id": 33,
+      "name": "yà",
+      "initial_id": 0,
+      "final_id": 10,
+      "tone_id": 4
+    },
+    {
+      "id": 34,
+      "name": "yān",
+      "initial_id": 0,
+      "final_id": 11,
+      "tone_id": 1
+    },
+    {
+      "id": 35,
+      "name": "yán",
+      "initial_id": 0,
+      "final_id": 11,
+      "tone_id": 2
+    },
+    {
+      "id": 36,
+      "name": "yǎn",
+      "initial_id": 0,
+      "final_id": 11,
+      "tone_id": 3
+    },
+    {
+      "id": 37,
+      "name": "yàn",
+      "initial_id": 0,
+      "final_id": 11,
+      "tone_id": 4
+    },
+    {
+      "id": 38,
+      "name": "yāng",
+      "initial_id": 0,
+      "final_id": 12,
+      "tone_id": 1
+    },
+    {
+      "id": 39,
+      "name": "yáng",
+      "initial_id": 0,
+      "final_id": 12,
+      "tone_id": 2
+    },
+    {
+      "id": 40,
+      "name": "yǎng",
+      "initial_id": 0,
+      "final_id": 12,
+      "tone_id": 3
+    },
+    {
+      "id": 41,
+      "name": "yàng",
+      "initial_id": 0,
+      "final_id": 12,
+      "tone_id": 4
+    },
+    {
+      "id": 42,
+      "name": "yāo",
+      "initial_id": 0,
+      "final_id": 13,
+      "tone_id": 1
+    },
+    {
+      "id": 43,
+      "name": "yáo",
+      "initial_id": 0,
+      "final_id": 13,
+      "tone_id": 2
+    },
+    {
+      "id": 44,
+      "name": "yǎo",
+      "initial_id": 0,
+      "final_id": 13,
+      "tone_id": 3
+    },
+    {
+      "id": 45,
+      "name": "yào",
+      "initial_id": 0,
+      "final_id": 13,
+      "tone_id": 4
+    },
+    {
+      "id": 46,
+      "name": "yō",
+      "initial_id": 0,
+      "final_id": 14,
+      "tone_id": 1
+    },
+    {
+      "id": 47,
+      "name": "yōng",
+      "initial_id": 0,
+      "final_id": 15,
+      "tone_id": 1
+    },
+    {
+      "id": 48,
+      "name": "yóng",
+      "initial_id": 0,
+      "final_id": 15,
+      "tone_id": 2
+    },
+    {
+      "id": 49,
+      "name": "yǒng",
+      "initial_id": 0,
+      "final_id": 15,
+      "tone_id": 3
+    },
+    {
+      "id": 50,
+      "name": "yòng",
+      "initial_id": 0,
+      "final_id": 15,
+      "tone_id": 4
+    },
+    {
+      "id": 51,
+      "name": "yōu",
+      "initial_id": 0,
+      "final_id": 16,
+      "tone_id": 1
+    },
+    {
+      "id": 52,
+      "name": "yóu",
+      "initial_id": 0,
+      "final_id": 16,
+      "tone_id": 2
+    },
+    {
+      "id": 53,
+      "name": "yǒu",
+      "initial_id": 0,
+      "final_id": 16,
+      "tone_id": 3
+    },
+    {
+      "id": 54,
+      "name": "yòu",
+      "initial_id": 0,
+      "final_id": 16,
+      "tone_id": 4
+    },
+    {
+      "id": 55,
+      "name": "ō",
+      "initial_id": 0,
+      "final_id": 17,
+      "tone_id": 1
+    },
+    {
+      "id": 56,
+      "name": "ò",
+      "initial_id": 0,
+      "final_id": 17,
+      "tone_id": 4
+    },
+    {
+      "id": 57,
+      "name": "wēng",
+      "initial_id": 1,
+      "final_id": 18,
+      "tone_id": 1
+    },
+    {
+      "id": 58,
+      "name": "wéng",
+      "initial_id": 1,
+      "final_id": 18,
+      "tone_id": 2
+    },
+    {
+      "id": 59,
+      "name": "wèng",
+      "initial_id": 1,
+      "final_id": 18,
+      "tone_id": 3
+    },
+    {
+      "id": 60,
+      "name": "ōu",
+      "initial_id": 0,
+      "final_id": 19,
+      "tone_id": 1
+    },
+    {
+      "id": 61,
+      "name": "ǒu",
+      "initial_id": 0,
+      "final_id": 19,
+      "tone_id": 3
+    },
+    {
+      "id": 62,
+      "name": "òu",
+      "initial_id": 0,
+      "final_id": 19,
+      "tone_id": 4
+    },
+    {
+      "id": 63,
+      "name": "wū",
+      "initial_id": 1,
+      "final_id": 20,
+      "tone_id": 1
+    },
+    {
+      "id": 64,
+      "name": "wú",
+      "initial_id": 1,
+      "final_id": 20,
+      "tone_id": 2
+    },
+    {
+      "id": 65,
+      "name": "wǔ",
+      "initial_id": 1,
+      "final_id": 20,
+      "tone_id": 3
+    },
+    {
+      "id": 66,
+      "name": "wù",
+      "initial_id": 1,
+      "final_id": 20,
+      "tone_id": 4
+    },
+    {
+      "id": 67,
+      "name": "wā",
+      "initial_id": 1,
+      "final_id": 21,
+      "tone_id": 1
+    },
+    {
+      "id": 68,
+      "name": "wá",
+      "initial_id": 1,
+      "final_id": 21,
+      "tone_id": 2
+    },
+    {
+      "id": 69,
+      "name": "wǎ",
+      "initial_id": 1,
+      "final_id": 21,
+      "tone_id": 3
+    },
+    {
+      "id": 70,
+      "name": "wà",
+      "initial_id": 1,
+      "final_id": 21,
+      "tone_id": 4
+    },
+    {
+      "id": 71,
+      "name": "wāi",
+      "initial_id": 1,
+      "final_id": 22,
+      "tone_id": 1
+    },
+    {
+      "id": 72,
+      "name": "wǎi",
+      "initial_id": 1,
+      "final_id": 22,
+      "tone_id": 3
+    },
+    {
+      "id": 73,
+      "name": "wài",
+      "initial_id": 1,
+      "final_id": 22,
+      "tone_id": 4
+    },
+    {
+      "id": 74,
+      "name": "wān",
+      "initial_id": 1,
+      "final_id": 23,
+      "tone_id": 1
+    },
+    {
+      "id": 75,
+      "name": "wán",
+      "initial_id": 1,
+      "final_id": 23,
+      "tone_id": 2
+    },
+    {
+      "id": 76,
+      "name": "wǎn",
+      "initial_id": 1,
+      "final_id": 23,
+      "tone_id": 3
+    },
+    {
+      "id": 77,
+      "name": "wàn",
+      "initial_id": 1,
+      "final_id": 23,
+      "tone_id": 4
+    },
+    {
+      "id": 78,
+      "name": "wāng",
+      "initial_id": 1,
+      "final_id": 24,
+      "tone_id": 1
+    },
+    {
+      "id": 79,
+      "name": "wáng",
+      "initial_id": 1,
+      "final_id": 24,
+      "tone_id": 2
+    },
+    {
+      "id": 80,
+      "name": "wǎng",
+      "initial_id": 1,
+      "final_id": 24,
+      "tone_id": 3
+    },
+    {
+      "id": 81,
+      "name": "wàng",
+      "initial_id": 1,
+      "final_id": 24,
+      "tone_id": 4
+    },
+    {
+      "id": 82,
+      "name": "yuē",
+      "initial_id": 0,
+      "final_id": 25,
+      "tone_id": 1
+    },
+    {
+      "id": 83,
+      "name": "yuè",
+      "initial_id": 0,
+      "final_id": 25,
+      "tone_id": 4
+    },
+    {
+      "id": 84,
+      "name": "wēi",
+      "initial_id": 1,
+      "final_id": 26,
+      "tone_id": 1
+    },
+    {
+      "id": 85,
+      "name": "wéi",
+      "initial_id": 1,
+      "final_id": 26,
+      "tone_id": 2
+    },
+    {
+      "id": 86,
+      "name": "wěi",
+      "initial_id": 1,
+      "final_id": 26,
+      "tone_id": 3
+    },
+    {
+      "id": 87,
+      "name": "wèi",
+      "initial_id": 1,
+      "final_id": 26,
+      "tone_id": 4
+    },
+    {
+      "id": 88,
+      "name": "wēn",
+      "initial_id": 1,
+      "final_id": 27,
+      "tone_id": 1
+    },
+    {
+      "id": 89,
+      "name": "wén",
+      "initial_id": 1,
+      "final_id": 27,
+      "tone_id": 2
+    },
+    {
+      "id": 90,
+      "name": "wěn",
+      "initial_id": 1,
+      "final_id": 27,
+      "tone_id": 3
+    },
+    {
+      "id": 91,
+      "name": "wèn",
+      "initial_id": 1,
+      "final_id": 27,
+      "tone_id": 4
+    },
+    {
+      "id": 92,
+      "name": "wō",
+      "initial_id": 1,
+      "final_id": 28,
+      "tone_id": 1
+    },
+    {
+      "id": 93,
+      "name": "wǒ",
+      "initial_id": 1,
+      "final_id": 28,
+      "tone_id": 3
+    },
+    {
+      "id": 94,
+      "name": "wò",
+      "initial_id": 1,
+      "final_id": 28,
+      "tone_id": 4
+    },
+    {
+      "id": 95,
+      "name": "yū",
+      "initial_id": 0,
+      "final_id": 29,
+      "tone_id": 1
+    },
+    {
+      "id": 96,
+      "name": "yú",
+      "initial_id": 0,
+      "final_id": 29,
+      "tone_id": 2
+    },
+    {
+      "id": 97,
+      "name": "yǔ",
+      "initial_id": 0,
+      "final_id": 29,
+      "tone_id": 3
+    },
+    {
+      "id": 98,
+      "name": "yù",
+      "initial_id": 0,
+      "final_id": 29,
+      "tone_id": 4
+    }
+    {
+      "id": 99,
+      "name": "yuān",
+      "initial_id": 0,
+      "final_id": 30,
+      "tone_id": 1
+    },
+    {
+      "id": 100,
+      "name": "yuán",
+      "initial_id": 0,
+      "final_id": 30,
+      "tone_id": 2
+    },
+    {
+      "id": 101,
+      "name": "yuǎn",
+      "initial_id": 0,
+      "final_id": 30,
+      "tone_id": 3
+    },
+    {
+      "id": 102,
+      "name": "yuàn",
+      "initial_id": 0,
+      "final_id": 30,
+      "tone_id": 4
+    },
+    {
+      "id": 103,
+      "name": "yūn",
+      "initial_id": 0,
+      "final_id": 31,
+      "tone_id": 1
+    },
+    {
+      "id": 104,
+      "name": "yún",
+      "initial_id": 0,
+      "final_id": 31,
+      "tone_id": 2
+    },
+    {
+      "id": 105,
+      "name": "yǔn",
+      "initial_id": 0,
+      "final_id": 31,
+      "tone_id": 3
+    },
+    {
+      "id": 106,
+      "name": "yùn",
+      "initial_id": 0,
+      "final_id": 31,
+      "tone_id": 4
+    }
+  ]
+}
