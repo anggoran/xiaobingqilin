@@ -6180,6 +6180,146 @@
       "initial_id": 14,
       "final_id": 7,
       "tone_id": 4
+    },
+    {
+      "id": 887,
+      "name": "xiōng",
+      "initial_id": 14,
+      "final_id": 8,
+      "tone_id": 1
+    },
+    {
+      "id": 888,
+      "name": "xióng",
+      "initial_id": 14,
+      "final_id": 8,
+      "tone_id": 2
+    },
+    {
+      "id": 889,
+      "name": "xiū",
+      "initial_id": 14,
+      "final_id": 9,
+      "tone_id": 1
+    },
+    {
+      "id": 890,
+      "name": "xiǔ",
+      "initial_id": 14,
+      "final_id": 9,
+      "tone_id": 3
+    },
+    {
+      "id": 891,
+      "name": "xiù",
+      "initial_id": 14,
+      "final_id": 9,
+      "tone_id": 4
+    },
+    {
+      "id": 892,
+      "name": "xuē",
+      "initial_id": 14,
+      "final_id": 10,
+      "tone_id": 1
+    },
+    {
+      "id": 893,
+      "name": "xué",
+      "initial_id": 14,
+      "final_id": 10,
+      "tone_id": 2
+    },
+    {
+      "id": 894,
+      "name": "xuě",
+      "initial_id": 14,
+      "final_id": 10,
+      "tone_id": 3
+    },
+    {
+      "id": 895,
+      "name": "xuè",
+      "initial_id": 14,
+      "final_id": 10,
+      "tone_id": 4
+    },
+    {
+      "id": 896,
+      "name": "xū",
+      "initial_id": 14,
+      "final_id": 11,
+      "tone_id": 1
+    },
+    {
+      "id": 897,
+      "name": "xú",
+      "initial_id": 14,
+      "final_id": 11,
+      "tone_id": 2
+    },
+    {
+      "id": 898,
+      "name": "xǔ",
+      "initial_id": 14,
+      "final_id": 11,
+      "tone_id": 3
+    },
+    {
+      "id": 899,
+      "name": "xù",
+      "initial_id": 14,
+      "final_id": 11,
+      "tone_id": 4
+    },
+    {
+      "id": 900,
+      "name": "xuān",
+      "initial_id": 14,
+      "final_id": 12,
+      "tone_id": 1
+    },
+    {
+      "id": 901,
+      "name": "xuán",
+      "initial_id": 14,
+      "final_id": 12,
+      "tone_id": 2
+    },
+    {
+      "id": 902,
+      "name": "xuǎn",
+      "initial_id": 14,
+      "final_id": 12,
+      "tone_id": 3
+    },
+    {
+      "id": 903,
+      "name": "xuàn",
+      "initial_id": 14,
+      "final_id": 12,
+      "tone_id": 4
+    },
+    {
+      "id": 904,
+      "name": "xūn",
+      "initial_id": 14,
+      "final_id": 13,
+      "tone_id": 1
+    },
+    {
+      "id": 905,
+      "name": "xún",
+      "initial_id": 14,
+      "final_id": 13,
+      "tone_id": 2
+    },
+    {
+      "id": 906,
+      "name": "xùn",
+      "initial_id": 14,
+      "final_id": 13,
+      "tone_id": 4
     }
   ]
 }
