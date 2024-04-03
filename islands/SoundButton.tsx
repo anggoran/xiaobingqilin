@@ -1,10 +1,8 @@
-import { JSX } from "preact/jsx-runtime";
-
-export function SoundButton(props: JSX.HTMLAttributes<HTMLButtonElement>) {
+export function SoundButton({ sound_id }: { sound_id: string | undefined }) {
   const playPinyin = () => {
     const u = new SpeechSynthesisUtterance();
     u.lang = "zh-CN";
-    u.text = "ren2";
+    u.text = sound_id ?? "";
     u.rate = 0.25;
     u.pitch = 0.75;
     return window.speechSynthesis.speak(u);
