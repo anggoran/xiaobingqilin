@@ -1,9 +1,10 @@
 import { Signal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
+import { PinyinPartModel } from "../models/pinyin.ts";
 
 interface DropdownProps {
   section: string;
-  data: { id: string; name: number }[] | undefined;
+  data: PinyinPartModel[] | undefined;
   state: Signal<string>;
 }
 
