@@ -14,7 +14,7 @@ export function Dropdown({ props }: { props: DropdownProps }) {
     const selected = (e.target as HTMLInputElement).value;
     props.data.value = {
       ...props.data.value,
-      [`${props.section}_id`]: Number.parseInt(selected),
+      [`${props.section}_id`]: selected,
     };
     console.log(props.data.value);
   };
@@ -22,7 +22,9 @@ export function Dropdown({ props }: { props: DropdownProps }) {
   return (
     <select name={props.section} onChange={handleChange}>
       <option value="" hidden disabled selected>{props.section}</option>
-      {props?.model?.map((e) => <option value={e.id}>{e.name}</option>)}
+      {props?.model?.map((e) => (
+        <option type="number" value={e.id}>{e.name}</option>
+      ))}
     </select>
   );
 }

@@ -22,6 +22,7 @@ export function Menu({ props }: { props: MenuProps }) {
   return (
     <>
       <input
+        name={props.section}
         placeholder={props.section}
         list={props.section}
         onChange={handleChange}
