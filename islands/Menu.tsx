@@ -1,16 +1,22 @@
 import { JSX } from "preact/jsx-runtime";
 import { Signal } from "@preact/signals";
 import { PinyinPartModel } from "../models/pinyin.ts";
+import { AnswerModel } from "../models/pinyin.ts";
 
 interface MenuProps {
   section: string;
-  data: PinyinPartModel[] | undefined;
-  state: Signal<string>;
+  model: PinyinPartModel[] | undefined;
+  data: Signal<AnswerModel>;
 }
 
 export function Menu({ props }: { props: MenuProps }) {
   const handleChange = (e: JSX.TargetedEvent) => {
-    props.state.value = (e.target as HTMLInputElement).value;
+    const selected = (e.target as HTMLInputElement).value;
+    props.data.value = {
+      ...props.data.value,
+      [`${props.section}_id`]: props.model?.find((e) => e.name == selected)?.id,
+    };
+    console.log(props.data.value);
   };
 
   return (
@@ -23,7 +29,7 @@ export function Menu({ props }: { props: MenuProps }) {
       <datalist
         id={props.section}
       >
-        {props?.data?.map((e) => <option value={e.name} />)}
+        {props?.model?.map((e) => <option value={e.name} />)}
       </datalist>
     </>
   );

@@ -4,19 +4,16 @@ import { Menu } from "../islands/Menu.tsx";
 import { SoundButton } from "../islands/SoundButton.tsx";
 import { Label } from "../islands/Label.tsx";
 import { randomize } from "../utils/randomize.ts";
-import { useEffect } from "preact/hooks";
 import { readJSON } from "../utils/read-json.ts";
-import { Handlers, PageProps } from "$fresh/server.ts";
 
 export default async function BlueprintPage() {
+  const pinyins = await readJSON("pinyins");
   const initials = await readJSON("initials");
   const finals = await readJSON("finals");
   const tones = await readJSON("tones");
-  const question = await randomize();
 
-  const initial = signal("");
-  const final = signal("");
-  const tone = signal("");
+  const question = randomize(pinyins);
+  const answer = signal({ initial_id: 0, final_id: 0, tone_id: 0 });
 
   return (
     <div className="h-screen content-center">
@@ -26,14 +23,33 @@ export default async function BlueprintPage() {
         className="flex flex-col items-center space-y-4"
       >
         <SoundButton sound_id={question?.sound_id} />
-        <Label props={{ initial: initial, final: final, tone: tone }} />
+        <Label
+          props={{
+            models: pinyins,
+            data: answer,
+          }}
+        />
         <div className="flex flex-row space-x-8">
           <Menu
-            props={{ section: "initials", data: initials, state: initial }}
+            props={{
+              section: "initial",
+              model: initials,
+              data: answer,
+            }}
           />
-          <Menu props={{ section: "finals", data: finals, state: final }} />
+          <Menu
+            props={{
+              section: "final",
+              model: finals,
+              data: answer,
+            }}
+          />
           <Dropdown
-            props={{ section: "tones", data: tones, state: tone }}
+            props={{
+              section: "tone",
+              model: tones,
+              data: answer,
+            }}
           />
         </div>
         <div className="flex flex-row space-x-8">

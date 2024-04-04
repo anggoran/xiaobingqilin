@@ -11,3 +11,9 @@ export interface PinyinPartModel {
   id: number;
   name: string;
 }
+
+export interface AnswerModel {
+  initial_id: number;
+  final_id: number;
+  tone_id: number;
+}
