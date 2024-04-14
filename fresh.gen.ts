@@ -13,7 +13,6 @@ import * as $Dropdown from "./islands/Dropdown.tsx";
 import * as $Label from "./islands/Label.tsx";
 import * as $Menu from "./islands/Menu.tsx";
 import * as $SoundButton from "./islands/SoundButton.tsx";
-import * as $SubmitButton from "./islands/SubmitButton.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -31,7 +30,6 @@ const manifest = {
     "./islands/Label.tsx": $Label,
     "./islands/Menu.tsx": $Menu,
     "./islands/SoundButton.tsx": $SoundButton,
-    "./islands/SubmitButton.tsx": $SubmitButton,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

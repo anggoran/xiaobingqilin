@@ -1,4 +1,6 @@
-export function SoundButton({ sound_id }: { sound_id: string | undefined }) {
+export function SoundButton(
+  { sound_id, text }: { sound_id: string | undefined; text: string },
+) {
   const playPinyin = () => {
     const u = new SpeechSynthesisUtterance();
     u.lang = "zh-CN";
@@ -8,5 +10,5 @@ export function SoundButton({ sound_id }: { sound_id: string | undefined }) {
     return window.speechSynthesis.speak(u);
   };
 
-  return <button type="button" onClick={playPinyin}>🔈</button>;
+  return <button type="button" onClick={playPinyin}>{text}</button>;
 }
