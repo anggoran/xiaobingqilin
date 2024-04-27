@@ -16,7 +16,6 @@ export function Menu({ props }: { props: MenuProps }) {
       ...props.data.value,
       [`${props.section}_id`]: props.model?.find((e) => e.name == selected)?.id,
     };
-    console.log(props.data.value);
   };
 
   return (

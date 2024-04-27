@@ -3,10 +3,9 @@ import { Dropdown } from "../islands/Dropdown.tsx";
 import { Menu } from "../islands/Menu.tsx";
 import { SoundButton } from "../islands/SoundButton.tsx";
 import { Label } from "../islands/Label.tsx";
-import { randomize } from "../utils/randomize.ts";
-import { readJSON } from "../utils/read-json.ts";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { AnswerModel, PinyinModel, PinyinPartModel } from "../models/pinyin.ts";
+import { getBlueprint, postBlueprint } from "../controllers/blueprint.ts";
 
 interface Data {
   pinyins: PinyinModel[];
@@ -20,73 +19,10 @@ interface Data {
 
 export const handler: Handlers<Data> = {
   async GET(req, ctx) {
-    const url = new URL(req.url);
-    const questionParams = url.searchParams.get("question");
-    const answerParams = url.searchParams.get("answer");
-    const truthParams = url.searchParams.get("truth");
-    const pinyins: PinyinModel[] = await readJSON("pinyins");
-    const initials: PinyinPartModel[] = await readJSON("initials");
-    const finals: PinyinPartModel[] = await readJSON("finals");
-    const tones: PinyinPartModel[] = await readJSON("tones");
-    const question = pinyins.find((e) => e.name === questionParams) ??
-      randomize(pinyins);
-    const { initial_id, final_id, tone_id } =
-      pinyins.find((e) => e.name === answerParams) ??
-        { initial_id: 0, final_id: 0, tone_id: 0 };
-    const answer = { initial_id, final_id, tone_id };
-    const truth = truthParams === "true"
-      ? true
-      : truthParams === "false"
-      ? false
-      : null;
-
-    return ctx.render({
-      pinyins,
-      initials,
-      finals,
-      tones,
-      question,
-      answer,
-      truth,
-    });
+    return await getBlueprint(req, ctx);
   },
   async POST(req, ctx) {
-    const form = await req.formData();
-    const pinyins: PinyinModel[] = await readJSON("pinyins");
-    const initials: PinyinPartModel[] = await readJSON("initials");
-    const finals: PinyinPartModel[] = await readJSON("finals");
-    const question_id = form.get("question_id");
-    const initial = form.get("initial");
-    const final = form.get("final");
-    const question = pinyins.find((e) => e.id.toString() === (question_id!));
-    const { initial_id, final_id, tone_id } = question!;
-    const solution = { initial_id, final_id, tone_id };
-    const answer = {
-      initial_id: initials.find((e) => e.name == initial)!.id,
-      final_id: finals.find((e) => e.name == final)!.id,
-      tone_id: Number(form.get("tone")!.toString()),
-    };
-    const proposed = pinyins.find((e) =>
-      e.initial_id === answer.initial_id &&
-      e.final_id === answer.final_id &&
-      e.tone_id === answer.tone_id
-    );
-
-    const myQuestion = encodeURIComponent(question!.name);
-    let myAnswer = "N.A.";
-
-    if (proposed !== undefined) {
-      myAnswer = encodeURIComponent(proposed.name);
-    }
-
-    const headers = new Headers();
-    const params = `question=${myQuestion}&answer=${myAnswer}&` +
-      `truth=${JSON.stringify(solution) === JSON.stringify(answer)}`;
-    headers.set("location", `/blueprint?${params}`);
-    return new Response(null, {
-      status: 303,
-      headers: headers,
-    });
+    return await postBlueprint(req, ctx);
   },
 };
 
@@ -96,8 +32,6 @@ export default function Page(props: PageProps<Data>) {
 
   const { initial_id, final_id, tone_id } = answer;
   const myAnswer = signal({ initial_id, final_id, tone_id });
-
-  console.log(question);
 
   return (
     <div

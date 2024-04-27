@@ -14,17 +14,14 @@ export function Dropdown({ props }: { props: DropdownProps }) {
     const selected = (e.target as HTMLInputElement).value;
     props.data.value = {
       ...props.data.value,
-      [`${props.section}_id`]: selected,
+      [`${props.section}_id`]: props.model?.find((e) => e.name == selected)?.id,
     };
-    console.log(props.data.value);
   };
 
   return (
     <select name={props.section} onChange={handleChange}>
       <option value="" hidden disabled selected>{props.section}</option>
-      {props?.model?.map((e) => (
-        <option type="number" value={e.id}>{e.name}</option>
-      ))}
+      {props?.model?.map((e) => <option value={e.name}>{e.name}</option>)}
     </select>
   );
 }
