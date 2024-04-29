@@ -5,7 +5,7 @@ import { SoundButton } from "../islands/SoundButton.tsx";
 import { Label } from "../islands/Label.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { AnswerModel, PinyinModel, PinyinPartModel } from "../models/pinyin.ts";
-import { getBlueprint, postBlueprint } from "../controllers/blueprint.ts";
+import { getListening, postListening } from "../controllers/listening.ts";
 
 interface Data {
   pinyins: PinyinModel[];
@@ -19,14 +19,14 @@ interface Data {
 
 export const handler: Handlers<Data> = {
   async GET(req, ctx) {
-    return await getBlueprint(req, ctx);
+    return await getListening(req, ctx);
   },
   async POST(req, ctx) {
-    return await postBlueprint(req, ctx);
+    return await postListening(req, ctx);
   },
 };
 
-export default function Page(props: PageProps<Data>) {
+export default function ListeningPage(props: PageProps<Data>) {
   const { pinyins, initials, finals, tones, question, answer, truth } =
     props.data;
 
@@ -82,7 +82,7 @@ export default function Page(props: PageProps<Data>) {
           </div>
         </form>
         {truth !== null
-          ? <a href="/blueprint">Continue</a>
+          ? <a href="/listening">Continue</a>
           : (
             <div className="flex flex-row space-x-8">
               <button form="quiz" type="reset">Clear</button>

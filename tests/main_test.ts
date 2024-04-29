@@ -13,7 +13,7 @@ Deno.test("Feature: Listening Pinyin", async (t) => {
   const handler = await createHandler(manifest, config);
 
   await t.step("Get the question", async () => {
-    const req = new Request("http://localhost/blueprint");
+    const req = new Request("http://localhost/listening");
     const resp = await handler(req, CONNECTION);
     const text = await resp.text();
     assert(resp.ok);
@@ -26,7 +26,7 @@ Deno.test("Feature: Listening Pinyin", async (t) => {
     formData.append("initial", "sh");
     formData.append("final", "eng");
     formData.append("tone", "1st tone");
-    const req = new Request("http://localhost/blueprint", {
+    const req = new Request("http://localhost/listening", {
       method: "POST",
       body: formData,
     });
@@ -50,7 +50,7 @@ Deno.test("Feature: Listening Pinyin", async (t) => {
     formData.append("initial", "sh");
     formData.append("final", "eng");
     formData.append("tone", "1st tone");
-    const req = new Request("http://localhost/blueprint", {
+    const req = new Request("http://localhost/listening", {
       method: "POST",
       body: formData,
     });
@@ -73,7 +73,7 @@ Deno.test("Feature: Listening Pinyin", async (t) => {
     formData.append("initial", "sh");
     formData.append("final", "eng");
     formData.append("tone", "1st tone");
-    const req = new Request("http://localhost/blueprint", {
+    const req = new Request("http://localhost/listening", {
       method: "POST",
       body: formData,
     });
