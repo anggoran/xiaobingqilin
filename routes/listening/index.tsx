@@ -1,11 +1,15 @@
 import { signal } from "@preact/signals";
-import { Dropdown } from "../islands/Dropdown.tsx";
-import { Menu } from "../islands/Menu.tsx";
-import { SoundButton } from "../islands/SoundButton.tsx";
-import { Label } from "../islands/Label.tsx";
+import { Dropdown } from "../../islands/Dropdown.tsx";
+import { Menu } from "../../islands/Menu.tsx";
+import { SoundButton } from "../../islands/SoundButton.tsx";
+import { Label } from "../../islands/Label.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { AnswerModel, PinyinModel, PinyinPartModel } from "../models/pinyin.ts";
-import { getListening, postListening } from "../controllers/listening.ts";
+import {
+  AnswerModel,
+  PinyinModel,
+  PinyinPartModel,
+} from "../../models/pinyin.ts";
+import { getListening, postListening } from "../../controllers/listening.ts";
 
 interface Data {
   pinyins: PinyinModel[];
