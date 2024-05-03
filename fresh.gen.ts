@@ -9,7 +9,6 @@ import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $listening_index from "./routes/listening/index.tsx";
 import * as $reading_quiz_ from "./routes/reading/[quiz].tsx";
-import * as $reading_completed from "./routes/reading/completed.tsx";
 import * as $reading_index from "./routes/reading/index.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Dropdown from "./islands/Dropdown.tsx";
@@ -27,7 +26,6 @@ const manifest = {
     "./routes/index.tsx": $index,
     "./routes/listening/index.tsx": $listening_index,
     "./routes/reading/[quiz].tsx": $reading_quiz_,
-    "./routes/reading/completed.tsx": $reading_completed,
     "./routes/reading/index.tsx": $reading_index,
   },
   islands: {
