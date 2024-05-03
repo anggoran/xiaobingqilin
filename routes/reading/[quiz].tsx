@@ -31,8 +31,10 @@ export const handler: Handlers<Data> = {
 };
 
 export default function ReadingQuizPage(props: PageProps<Data>) {
+  const currentURL = decodeURIComponent(props.url.pathname);
   const { hanzi, answer, truth, pinyins, initials, finals, tones } = props.data;
   const { character: question, pinyin: solution, definition } = hanzi;
+  const nextURL = currentURL.replace(question, "");
 
   const { initial_id, final_id, tone_id } = answer;
   const myAnswer = signal({ initial_id, final_id, tone_id });
@@ -93,7 +95,7 @@ export default function ReadingQuizPage(props: PageProps<Data>) {
           </div>
         </form>
         {truth !== null
-          ? <a href="/reading">Continue</a>
+          ? <a href={nextURL}>Continue</a>
           : (
             <div className="flex flex-row space-x-8">
               <button form="quiz" type="reset">Clear</button>
