@@ -20,7 +20,7 @@ export default function ReadingPage() {
           <div className="flex flex-row space-x-8">
             <textarea
               name="hanzis"
-              placeholder="Enter your hanzi list, separated with comma."
+              placeholder="Enter your hanzi list, without any separator."
             >
             </textarea>
           </div>
