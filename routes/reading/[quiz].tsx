@@ -1,34 +1,40 @@
-import { signal } from "@preact/signals";
-import { Dropdown } from "../islands/Dropdown.tsx";
-import { Menu } from "../islands/Menu.tsx";
-import { SoundButton } from "../islands/SoundButton.tsx";
-import { Label } from "../islands/Label.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { AnswerModel, PinyinModel, PinyinPartModel } from "../models/pinyin.ts";
-import { getBlueprint, postBlueprint } from "../controllers/blueprint.ts";
+import { signal } from "https://esm.sh/v135/@preact/signals-core@1.5.1/dist/signals-core.js";
+import { getReadingQuiz, postReadingQuiz } from "../../controllers/reading.ts";
+import { Dropdown } from "../../islands/Dropdown.tsx";
+import { Label } from "../../islands/Label.tsx";
+import { Menu } from "../../islands/Menu.tsx";
+import {
+  AnswerModel,
+  HanziModel,
+  PinyinModel,
+  PinyinPartModel,
+} from "../../models/pinyin.ts";
 
 interface Data {
+  hanzi: HanziModel;
+  answer: AnswerModel;
+  truth: boolean | null;
   pinyins: PinyinModel[];
   initials: PinyinPartModel[];
   finals: PinyinPartModel[];
   tones: PinyinPartModel[];
-  question: PinyinModel;
-  answer: AnswerModel;
-  truth: boolean | null;
 }
 
 export const handler: Handlers<Data> = {
   async GET(req, ctx) {
-    return await getBlueprint(req, ctx);
+    return await getReadingQuiz(req, ctx);
   },
   async POST(req, ctx) {
-    return await postBlueprint(req, ctx);
+    return await postReadingQuiz(req, ctx);
   },
 };
 
-export default function Page(props: PageProps<Data>) {
-  const { pinyins, initials, finals, tones, question, answer, truth } =
-    props.data;
+export default function ReadingQuizPage(props: PageProps<Data>) {
+  const currentURL = decodeURIComponent(props.url.pathname);
+  const { hanzi, answer, truth, pinyins, initials, finals, tones } = props.data;
+  const { character: question, pinyin: solution, definition } = hanzi;
+  const nextURL = currentURL.replace(question, "");
 
   const { initial_id, final_id, tone_id } = answer;
   const myAnswer = signal({ initial_id, final_id, tone_id });
@@ -43,12 +49,19 @@ export default function Page(props: PageProps<Data>) {
           : "bg-white"
       } `}
     >
-      <div // f-client-nav
-       className="flex flex-col items-center space-y-4">
-        <SoundButton
-          sound_id={question.sound_id}
-          text={truth !== null ? question.name : "🔈"}
-        />
+      <div className="flex flex-col items-center space-y-4">
+        <div className="text-center">
+          <p>
+            <b>Question:</b> {question} - {definition}
+          </p>
+          {truth !== null
+            ? (
+              <p>
+                <b>Solution:</b> {solution}
+              </p>
+            )
+            : <></>}
+        </div>
         <Label
           props={{
             models: pinyins,
@@ -56,7 +69,7 @@ export default function Page(props: PageProps<Data>) {
           }}
         />
         <form id="quiz">
-          <input type="hidden" name="question_id" value={question.id} />
+          <input type="hidden" name="question" value={question} />
           <div className="flex flex-row space-x-8">
             <Menu
               props={{
@@ -82,7 +95,7 @@ export default function Page(props: PageProps<Data>) {
           </div>
         </form>
         {truth !== null
-          ? <a href="/blueprint">Continue</a>
+          ? <a href={nextURL}>Continue</a>
           : (
             <div className="flex flex-row space-x-8">
               <button form="quiz" type="reset">Clear</button>

@@ -17,3 +17,11 @@ export interface AnswerModel {
   final_id: number;
   tone_id: number;
 }
+
+export interface HanziModel {
+  character: string;
+  pinyin: string[];
+  definition: string;
+  decomposition: string;
+  radical: string;
+}

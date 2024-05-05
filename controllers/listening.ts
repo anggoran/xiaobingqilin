@@ -4,7 +4,7 @@ import { PinyinModel } from "../models/pinyin.ts";
 import { randomize } from "../utils/randomize.ts";
 import { readJSON } from "../utils/read-json.ts";
 
-export const getBlueprint = async (
+export const getListening = async (
   req: Request,
   ctx: FreshContext,
 ) => {
@@ -39,7 +39,7 @@ export const getBlueprint = async (
   });
 };
 
-export const postBlueprint = async (
+export const postListening = async (
   req: Request,
   _ctx: FreshContext,
 ) => {

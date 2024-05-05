@@ -5,9 +5,11 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
-import * as $blueprint from "./routes/blueprint.tsx";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
+import * as $listening_index from "./routes/listening/index.tsx";
+import * as $reading_quiz_ from "./routes/reading/[quiz].tsx";
+import * as $reading_index from "./routes/reading/index.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Dropdown from "./islands/Dropdown.tsx";
 import * as $Label from "./islands/Label.tsx";
@@ -20,9 +22,11 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/api/joke.ts": $api_joke,
-    "./routes/blueprint.tsx": $blueprint,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
+    "./routes/listening/index.tsx": $listening_index,
+    "./routes/reading/[quiz].tsx": $reading_quiz_,
+    "./routes/reading/index.tsx": $reading_index,
   },
   islands: {
     "./islands/Counter.tsx": $Counter,
