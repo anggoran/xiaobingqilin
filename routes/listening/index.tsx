@@ -1,4 +1,4 @@
-import { signal } from "@preact/signals";
+import { Signal, signal } from "@preact/signals";
 import { Dropdown } from "../../islands/Dropdown.tsx";
 import { Menu } from "../../islands/Menu.tsx";
 import { SoundButton } from "../../islands/SoundButton.tsx";
@@ -12,30 +12,26 @@ import {
 import { getListening, postListening } from "../../controllers/listening.ts";
 
 interface Data {
-  pinyins: PinyinModel[];
-  initials: PinyinPartModel[];
-  finals: PinyinPartModel[];
-  tones: PinyinPartModel[];
-  question: PinyinModel;
+  question: string;
   answer: AnswerModel;
+  solution: string | null;
   truth: boolean | null;
+  options: {
+    pinyins: PinyinModel[];
+    initials: PinyinPartModel[];
+    finals: PinyinPartModel[];
+    tones: PinyinPartModel[];
+  };
 }
 
 export const handler: Handlers<Data> = {
-  async GET(req, ctx) {
-    return await getListening(req, ctx);
-  },
-  async POST(req, ctx) {
-    return await postListening(req, ctx);
-  },
+  GET: async (req, ctx) => await getListening(req, ctx),
+  POST: async (req, ctx) => await postListening(req, ctx),
 };
 
 export default function ListeningPage(props: PageProps<Data>) {
-  const { pinyins, initials, finals, tones, question, answer, truth } =
-    props.data;
-
-  const { initial_id, final_id, tone_id } = answer;
-  const myAnswer = signal({ initial_id, final_id, tone_id });
+  const { question, answer, solution, truth, options } = props.data;
+  const answerState: Signal<AnswerModel> = signal({ ...answer });
 
   return (
     <div
@@ -47,40 +43,39 @@ export default function ListeningPage(props: PageProps<Data>) {
           : "bg-white"
       } `}
     >
-      <div // f-client-nav
-       className="flex flex-col items-center space-y-4">
+      <div className="flex flex-col items-center space-y-4">
         <SoundButton
-          sound_id={question.sound_id}
-          text={truth !== null ? question.name : "🔈"}
+          sound_id={question}
+          text={solution ?? "🔈"}
         />
         <Label
           props={{
-            models: pinyins,
-            data: myAnswer,
+            models: options.pinyins,
+            data: answerState,
           }}
         />
         <form id="quiz">
-          <input type="hidden" name="question_id" value={question.id} />
+          <input type="hidden" name="question" value={question} />
           <div className="flex flex-row space-x-8">
             <Menu
               props={{
                 section: "initial",
-                model: initials,
-                data: myAnswer,
+                model: options.initials,
+                data: answerState,
               }}
             />
             <Menu
               props={{
                 section: "final",
-                model: finals,
-                data: myAnswer,
+                model: options.finals,
+                data: answerState,
               }}
             />
             <Dropdown
               props={{
                 section: "tone",
-                model: tones,
-                data: myAnswer,
+                model: options.tones,
+                data: answerState,
               }}
             />
           </div>
