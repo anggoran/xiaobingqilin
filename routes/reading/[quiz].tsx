@@ -1,43 +1,43 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { signal } from "https://esm.sh/v135/@preact/signals-core@1.5.1/dist/signals-core.js";
+import {
+  Signal,
+  signal,
+} from "https://esm.sh/v135/@preact/signals-core@1.5.1/dist/signals-core.js";
 import { getReadingQuiz, postReadingQuiz } from "../../controllers/reading.ts";
 import { Dropdown } from "../../islands/Dropdown.tsx";
 import { Label } from "../../islands/Label.tsx";
 import { Menu } from "../../islands/Menu.tsx";
 import {
   AnswerModel,
-  HanziModel,
   PinyinModel,
   PinyinPartModel,
 } from "../../models/pinyin.ts";
 
 interface Data {
-  hanzi: HanziModel;
+  question: string;
+  hint: string;
   answer: AnswerModel;
+  solution: string | null;
   truth: boolean | null;
-  pinyins: PinyinModel[];
-  initials: PinyinPartModel[];
-  finals: PinyinPartModel[];
-  tones: PinyinPartModel[];
+  options: {
+    pinyins: PinyinModel[];
+    initials: PinyinPartModel[];
+    finals: PinyinPartModel[];
+    tones: PinyinPartModel[];
+  };
 }
 
 export const handler: Handlers<Data> = {
-  async GET(req, ctx) {
-    return await getReadingQuiz(req, ctx);
-  },
-  async POST(req, ctx) {
-    return await postReadingQuiz(req, ctx);
-  },
+  GET: async (req, ctx) => await getReadingQuiz(req, ctx),
+  POST: async (req, ctx) => await postReadingQuiz(req, ctx),
 };
 
 export default function ReadingQuizPage(props: PageProps<Data>) {
   const currentURL = decodeURIComponent(props.url.pathname);
-  const { hanzi, answer, truth, pinyins, initials, finals, tones } = props.data;
-  const { character: question, pinyin: solution, definition } = hanzi;
+  const { question, hint, answer, solution, truth, options } = props.data;
   const nextURL = currentURL.replace(question, "");
 
-  const { initial_id, final_id, tone_id } = answer;
-  const myAnswer = signal({ initial_id, final_id, tone_id });
+  const answerState: Signal<AnswerModel> = signal({ ...answer });
 
   return (
     <div
@@ -52,7 +52,10 @@ export default function ReadingQuizPage(props: PageProps<Data>) {
       <div className="flex flex-col items-center space-y-4">
         <div className="text-center">
           <p>
-            <b>Question:</b> {question} - {definition}
+            <b>Hint:</b> {hint}
+          </p>
+          <p>
+            <b>Question:</b> {question}
           </p>
           {truth !== null
             ? (
@@ -64,8 +67,8 @@ export default function ReadingQuizPage(props: PageProps<Data>) {
         </div>
         <Label
           props={{
-            models: pinyins,
-            data: myAnswer,
+            models: options.pinyins,
+            data: answerState,
           }}
         />
         <form id="quiz">
@@ -74,22 +77,22 @@ export default function ReadingQuizPage(props: PageProps<Data>) {
             <Menu
               props={{
                 section: "initial",
-                model: initials,
-                data: myAnswer,
+                model: options.initials,
+                data: answerState,
               }}
             />
             <Menu
               props={{
                 section: "final",
-                model: finals,
-                data: myAnswer,
+                model: options.finals,
+                data: answerState,
               }}
             />
             <Dropdown
               props={{
                 section: "tone",
-                model: tones,
-                data: myAnswer,
+                model: options.tones,
+                data: answerState,
               }}
             />
           </div>
