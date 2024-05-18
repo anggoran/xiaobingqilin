@@ -1,12 +1,12 @@
 import { Handlers } from "$fresh/server.ts";
-import { getReading, postReading } from "../../controllers/reading.ts";
+import { getWriting, postWriting } from "../../controllers/writing.ts";
 
 export const handler: Handlers = {
-  GET: (req, ctx) => getReading(req, ctx),
-  POST: async (req, ctx) => await postReading(req, ctx),
+  GET: (req, ctx) => getWriting(req, ctx),
+  POST: async (req, ctx) => await postWriting(req, ctx),
 };
 
-export default function ReadingPage() {
+export default function WritingPage() {
   return (
     <>
       <a href="/">Back to home</a>

@@ -3,6 +3,7 @@ import manifest from "../fresh.gen.ts";
 import config from "../fresh.config.ts";
 import * as listening from "./listening.ts";
 import * as reading from "./reading.ts";
+import * as writing from "./writing.ts";
 
 export const CONNECTION: ServeHandlerInfo = {
   remoteAddr: { hostname: "localhost", port: 8000, transport: "tcp" },
@@ -22,4 +23,11 @@ Deno.test("Feature: Reading Hanzi", async (t) => {
   await t.step("Post the answer", reading.postAnswer);
   await t.step("Get correct state", reading.getCorrectState);
   await t.step("Get false state", reading.getFalseState);
+});
+
+Deno.test("Feature: Writing Hanzi", async (t) => {
+  await t.step("Render creation form", writing.renderCreationForm);
+  await t.step("Start a quiz", writing.startQuiz);
+  await t.step("Get a quiz writer", writing.getQuizWriter);
+  await t.step("Get a solution writer", writing.getSolutionWriter);
 });
