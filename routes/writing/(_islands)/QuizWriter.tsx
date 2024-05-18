@@ -3,17 +3,17 @@ import { Signal } from "https://esm.sh/v135/@preact/signals@1.2.2/X-ZS8q/dist/si
 import { useEffect } from "preact/hooks";
 
 export default function QuizWriter(
-  { hasStarted }: { hasStarted: Signal<boolean> },
+  { character, hasBegun }: { character: string; hasBegun: Signal<boolean> },
 ) {
   let hanzi: HanziWriter;
 
   const onStart = () => {
     hanzi?.quiz();
-    hasStarted.value = true;
+    hasBegun.value = true;
   };
 
   useEffect(() => {
-    hanzi = HanziWriter.create("quiz", "我", {
+    hanzi = HanziWriter.create("quiz-writer", character, {
       width: 100,
       height: 100,
       padding: 5,
@@ -31,10 +31,10 @@ export default function QuizWriter(
     <>
       <div className="flex flex-col">
         <svg
-          id="quiz"
-          className={`${
-            hasStarted.value ? "opacity-100" : "opacity-0"
-          } duration-300 transition-opacity stroke-gray-200`}
+          id="quiz-writer"
+          width="100"
+          height="100"
+          className={hasBegun.value ? "stroke-gray-200" : "stroke-white"}
         >
           <line x1="0" y1="0" x2="100" y2="100" />
           <line x1="100" y1="0" x2="0" y2="100" />
@@ -43,11 +43,15 @@ export default function QuizWriter(
           <rect
             width="100"
             height="100"
-            stroke-width={5}
-            className="fill-none stroke-black"
+            className="fill-none stroke-[5px] stroke-black"
           />
         </svg>
-        <button type="button" onClick={onStart}>
+        <button
+          disabled={hasBegun.value}
+          className={"text-white bg-black disabled:bg-gray-200"}
+          type="button"
+          onClick={onStart}
+        >
           Start quiz
         </button>
       </div>

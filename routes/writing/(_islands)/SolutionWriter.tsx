@@ -1,7 +1,9 @@
 import HanziWriter from "hanzi-writer";
 import { useEffect } from "preact/hooks";
 
-export default function QuizWriter() {
+export default function SolutionWriter(
+  { character }: { character: string },
+) {
   let hanzi: HanziWriter;
 
   const onStart = () => {
@@ -11,8 +13,8 @@ export default function QuizWriter() {
 
   useEffect(() => {
     hanzi = HanziWriter.create(
-      "solution",
-      "我",
+      "solution-writer",
+      character,
       {
         width: 100,
         height: 100,
@@ -40,25 +42,22 @@ export default function QuizWriter() {
     <>
       <div className="flex flex-col">
         <svg
-          id="solution"
+          id="solution-writer"
           width="100"
           height="100"
+          className="stroke-gray-200"
         >
-          <line x1="0" y1="0" x2="100" y2="100" stroke="#EFEFEF" />
-          <line x1="100" y1="0" x2="0" y2="100" stroke="#EFEFEF" />
-          <line x1="50" y1="0" x2="50" y2="100" stroke="#EFEFEF" />
-          <line x1="0" y1="50" x2="100" y2="50" stroke="#EFEFEF" />
+          <line x1="0" y1="0" x2="100" y2="100" />
+          <line x1="100" y1="0" x2="0" y2="100" />
+          <line x1="50" y1="0" x2="50" y2="100" />
+          <line x1="0" y1="50" x2="100" y2="50" />
           <rect
             width="100"
             height="100"
-            fill="none"
-            stroke="#000"
-            stroke-width={5}
+            className="fill-none stroke-[5px] stroke-black"
           />
         </svg>
-        <button type="button" onClick={onStart}>
-          Show solution
-        </button>
+        <button type="button" onClick={onStart}>Show solution</button>
       </div>
     </>
   );
