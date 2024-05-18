@@ -34,63 +34,66 @@ export default function ListeningPage(props: PageProps<Data>) {
   const answerState: Signal<AnswerModel> = signal({ ...answer });
 
   return (
-    <div
-      className={`h-screen content-center ${
-        truth === true
-          ? "bg-green-300"
-          : truth === false
-          ? "bg-red-300"
-          : "bg-white"
-      } `}
-    >
-      <div className="flex flex-col items-center space-y-4">
-        <SoundButton
-          sound_id={question}
-          text={solution ?? "🔈"}
-        />
-        <Label
-          props={{
-            models: options.pinyins,
-            data: answerState,
-          }}
-        />
-        <form id="quiz">
-          <input type="hidden" name="question" value={question} />
-          <div className="flex flex-row space-x-8">
-            <Menu
-              props={{
-                section: "initial",
-                model: options.initials,
-                data: answerState,
-              }}
-            />
-            <Menu
-              props={{
-                section: "final",
-                model: options.finals,
-                data: answerState,
-              }}
-            />
-            <Dropdown
-              props={{
-                section: "tone",
-                model: options.tones,
-                data: answerState,
-              }}
-            />
-          </div>
-        </form>
-        {truth !== null
-          ? <a href="/listening">Continue</a>
-          : (
+    <>
+      <a href="/">Back to home</a>
+      <div
+        className={`h-screen content-center ${
+          truth === true
+            ? "bg-green-300"
+            : truth === false
+            ? "bg-red-300"
+            : "bg-white"
+        } `}
+      >
+        <div className="flex flex-col items-center space-y-4">
+          <SoundButton
+            sound_id={question}
+            text={solution ?? "🔈"}
+          />
+          <Label
+            props={{
+              models: options.pinyins,
+              data: answerState,
+            }}
+          />
+          <form id="quiz">
+            <input type="hidden" name="question" value={question} />
             <div className="flex flex-row space-x-8">
-              <button form="quiz" type="reset">Clear</button>
-              <button form="quiz" type="submit" formmethod="POST">
-                Submit
-              </button>
+              <Menu
+                props={{
+                  section: "initial",
+                  model: options.initials,
+                  data: answerState,
+                }}
+              />
+              <Menu
+                props={{
+                  section: "final",
+                  model: options.finals,
+                  data: answerState,
+                }}
+              />
+              <Dropdown
+                props={{
+                  section: "tone",
+                  model: options.tones,
+                  data: answerState,
+                }}
+              />
             </div>
-          )}
+          </form>
+          {truth !== null
+            ? <a href="/listening">Continue</a>
+            : (
+              <div className="flex flex-row space-x-8">
+                <button form="quiz" type="reset">Clear</button>
+                <button form="quiz" type="submit" formmethod="POST">
+                  Submit
+                </button>
+              </div>
+            )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
