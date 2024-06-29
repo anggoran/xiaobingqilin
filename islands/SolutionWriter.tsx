@@ -2,7 +2,7 @@ import HanziWriter from "hanzi-writer";
 import { useEffect } from "preact/hooks";
 
 export default function SolutionWriter(
-  { character }: { character: string },
+  { character, label }: { character: string; label: string },
 ) {
   let hanzi: HanziWriter;
 
@@ -57,7 +57,7 @@ export default function SolutionWriter(
             className="fill-none stroke-[5px] stroke-black"
           />
         </svg>
-        <button type="button" onClick={onStart}>Show solution</button>
+        <button type="button" onClick={onStart}>{label}</button>
       </div>
     </>
   );
