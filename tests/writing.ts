@@ -41,7 +41,6 @@ export const getQuizWriter = async () => {
   const text = await resp.text();
 
   assert(resp.ok);
-  console.log(text);
   assert(
     text.includes(
       '<svg id="quiz-writer" width="100" height="100" class="stroke-white">',
