@@ -31,7 +31,7 @@ export const getReadingQuiz = async (
     answer: url.searchParams.get("answer"),
   };
 
-  const hanziTXT: string[] = await readTXT("hanzis");
+  const hanziTXT: string[] = await readTXT("unihan");
   const pinyinJSON: PinyinModel[] = await readJSON("pinyins");
   const initialJSON: PinyinPartModel[] = await readJSON("initials");
   const finalJSON: PinyinPartModel[] = await readJSON("finals");
@@ -92,7 +92,7 @@ export const postReadingQuiz = async (
     tone: form.get("tone"),
   };
 
-  const hanziTXT: string[] = await readTXT("hanzis");
+  const hanziTXT: string[] = await readTXT("unihan");
   const pinyinJSON: PinyinModel[] = await readJSON("pinyins");
   const initialJSON: PinyinPartModel[] = await readJSON("initials");
   const finalJSON: PinyinPartModel[] = await readJSON("finals");
