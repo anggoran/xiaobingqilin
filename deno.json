@@ -19,6 +19,7 @@
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
     "hanzi-writer": "https://esm.sh/hanzi-writer@3.6.1",
+    "@heroicons/react": "https://esm.sh/@heroicons/react@2.1.5/24/solid",
     "preact": "https://esm.sh/preact@10.19.6",
     "preact/": "https://esm.sh/preact@10.19.6/",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
