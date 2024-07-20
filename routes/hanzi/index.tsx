@@ -1,54 +1,29 @@
-// fixed size on pagination
+import { Handlers, PageProps } from "$fresh/server.ts";
+import { getHanziList } from "../../controllers/hanzi.ts";
+import { HanziModel } from "../../models/hanzi.ts";
+import { paginate } from "../../utils/paginate.ts";
 
-import { PageProps } from "$fresh/server.ts";
+interface Data {
+  totalPages: number;
+  hanziList: HanziModel[];
+}
 
-export default function Home(props: PageProps) {
-  const hanziList = [
-    "我",
-    "是",
-    "印",
-    "尼",
-    "人",
-    "我",
-    "是",
-    "印",
-    "尼",
-    "人",
-    "我",
-    "是",
-    "印",
-    "尼",
-    "人",
-  ];
-  const totalPages = hanziList.length;
+export const handler: Handlers<Data> = {
+  GET: (req, ctx) => getHanziList(req, ctx),
+};
+
+export default function HanziPage(props: PageProps<Data>) {
   const currentPage = parseInt(props.url.searchParams.get("page") || "1");
-  // const contentPerPage = 10;
-  // const startIndex = (currentPage - 1) * contentPerPage;
-  // const endIndex = startIndex + contentPerPage - 1;
-  let pages = [];
-  if (currentPage <= 6) {
-    pages = [1, 2, 3, 4, 5, 6, "..."];
-  } else if (currentPage > totalPages - 6) {
-    pages = [
-      "...",
-      totalPages - 5,
-      totalPages - 4,
-      totalPages - 3,
-      totalPages - 2,
-      totalPages - 1,
-      totalPages,
-    ];
-  } else {
-    pages = [
-      "...",
-      currentPage - 2,
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
-      currentPage + 2,
-      "...",
-    ];
-  }
+  const { totalPages, hanziList } = props.data;
+  const pagination = paginate(currentPage, totalPages);
+  const contentPerPage = 10;
+  const startOrder = currentPage * contentPerPage - 9;
+  const endOrder = currentPage * contentPerPage;
+
+  const pageNumbers = Array.from(
+    { length: endOrder - startOrder + 1 },
+    (_, i) => i + startOrder,
+  );
 
   return (
     <div className="h-screen content-center bg-white">
@@ -66,30 +41,24 @@ export default function Home(props: PageProps) {
               </tr>
             </thead>
             <tbody>
-              {[
-                [
-                  "乌",
-                  "wū",
-                  ["abbr. for Ukraine 烏克蘭|乌克兰[Wu1ke4lan2]", "surname Wu"],
-                ],
-                ["乌", "wū", ["crow", "black"]],
-                ["我", "wǒ", ["I; me; my"]],
-              ].map((e, i) => (
+              {hanziList.map((e, i) => (
                 <tr>
                   <td className="px-2 py-1 border border-gray-500 text-center">
-                    {i + 1}
+                    {pageNumbers[i]}
                   </td>
                   <td className="p-1 border border-gray-500 text-center text-blue-500">
-                    <a href={"/hanzi" + `/${e[0]}`}>{e[0]}</a>
+                    <a href={"/hanzi" + `/${e.form}`}>{e.form}</a>
                   </td>
                   <td className="p-1 border border-gray-500 text-center">
-                    {e[1]}
+                    {e.sound}
                   </td>
                   <td className="p-1 border border-gray-500">
                     <ul>
-                      {e[2].map((elem) => (
-                        <li>{e[2].length > 1 ? "•" : ""} {elem}</li>
-                      ))}
+                      {e.meaning.split(";").length > 1
+                        ? e.meaning.split(";").map((elem) => (
+                          <li>{"• " + elem}</li>
+                        ))
+                        : <li>{e.meaning}</li>}
                     </ul>
                   </td>
                 </tr>
@@ -97,7 +66,6 @@ export default function Home(props: PageProps) {
             </tbody>
           </table>
         </div>
-        {/* to be edited */}
         <div class="flex items-center justify-between bg-white px-4 py-3 sm:px-6">
           <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm">
             <a
@@ -142,7 +110,7 @@ export default function Home(props: PageProps) {
                 />
               </svg>
             </a>
-            {pages.map((e) => (
+            {pagination.map((e) => (
               <a
                 href={`?page=${e}`}
                 class={`${
