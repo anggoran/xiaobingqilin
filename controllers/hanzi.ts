@@ -20,6 +20,8 @@ export const getHanziList = async (
   return ctx.render({
     totalPages: res.count! / contentPerPage,
     hanziList: data,
+    startOrder: startIndex + 1,
+    endOrder: endIndex + 1,
   });
 };
 
