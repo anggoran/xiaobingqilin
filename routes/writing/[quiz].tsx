@@ -2,7 +2,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { signal } from "https://esm.sh/v135/@preact/signals-core@1.5.1/dist/signals-core.js";
 import { getWritingQuiz } from "../../controllers/writing.ts";
 import QuizWriter from "./(_islands)/QuizWriter.tsx";
-import SolutionWriter from "./(_islands)/SolutionWriter.tsx";
+import SolutionWriter from "../../islands/SolutionWriter.tsx";
 
 interface Data {
   form: string;
@@ -19,7 +19,7 @@ export default function WritingPage(props: PageProps<Data>) {
   const { form, sound, meaning } = props.data;
   const nextURL = currentURL.replace(form, "");
 
-  const quizHasBegun = signal(false);
+  const quizState = signal(false);
 
   return (
     <div className="h-screen content-center bg-white">
@@ -33,8 +33,8 @@ export default function WritingPage(props: PageProps<Data>) {
         <form id="quiz">
           <input type="hidden" name="hanzi" value={form} />
           <div className="flex flex-row space-x-8">
-            <QuizWriter character={form} hasBegun={quizHasBegun} />
-            <SolutionWriter character={form} />
+            <QuizWriter character={form} hasBegun={quizState} />
+            <SolutionWriter character={form} label="Show Solution" />
           </div>
         </form>
         <a href={nextURL}>Continue</a>

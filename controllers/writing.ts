@@ -29,7 +29,7 @@ export const getWritingQuiz = async (
     hanzi: url.searchParams.get("hanzi"),
   };
 
-  const hanziTXT: string[] = await readTXT("hanzis");
+  const hanziTXT: string[] = await readTXT("unihan");
 
   const hanziList = decodeURIComponent(params.quiz).split("");
   const randomNumber = Math.floor(Math.random() * hanziList.length);
