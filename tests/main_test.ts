@@ -4,6 +4,7 @@ import config from "../fresh.config.ts";
 import * as listening from "./listening.ts";
 import * as reading from "./reading.ts";
 import * as writing from "./writing.ts";
+import * as hanzi from "./hanzi.ts";
 
 export const CONNECTION: ServeHandlerInfo = {
   remoteAddr: { hostname: "localhost", port: 8000, transport: "tcp" },
@@ -30,4 +31,9 @@ Deno.test("Feature: Writing Hanzi", async (t) => {
   await t.step("Start a quiz", writing.startQuiz);
   await t.step("Get a quiz writer", writing.getQuizWriter);
   await t.step("Get a solution writer", writing.getSolutionWriter);
+});
+
+Deno.test("Feature: Hanzi Database", async (t) => {
+  await t.step("Show Hanzi List Page", hanzi.getHanziList);
+  await t.step("Show Hanzi Detail Page", hanzi.getHanziDetail);
 });
