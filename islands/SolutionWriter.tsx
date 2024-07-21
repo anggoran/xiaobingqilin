@@ -25,15 +25,6 @@ export default function SolutionWriter(
         showOutline: false,
         strokeAnimationSpeed: 2,
         delayBetweenStrokes: 100,
-        charDataLoader: async function (char) {
-          const response = await fetch(
-            `https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0.1/${char}.json`,
-          );
-          if (!response.ok) {
-            throw new Error(`Failed to load character data for ${char}`);
-          }
-          return await response.json();
-        },
       },
     );
   }, []);

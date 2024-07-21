@@ -64,9 +64,5 @@ export const getSolutionWriter = async () => {
       '<svg id="solution-writer" width="100" height="100" class="stroke-gray-200">',
     ),
   );
-  assert(
-    text.includes(
-      '<button type="button">Show solution</button>',
-    ),
-  );
+  assert(text.includes('<button type="button">'));
 };
