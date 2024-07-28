@@ -29,8 +29,8 @@ export const getHanziDetail = async (
   _req: Request,
   ctx: FreshContext,
 ) => {
-  const form = decodeURIComponent(ctx.params["hanzi"]);
-  const res = await supabase.from("hanzis").select("*").eq("form", form);
+  const id = decodeURIComponent(ctx.params["id"]);
+  const res = await supabase.from("hanzis").select("*").eq("id", id);
   const data = res.data as HanziModel[];
 
   return ctx.render({ hanzi: data[0] });

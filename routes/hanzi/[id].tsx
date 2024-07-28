@@ -12,8 +12,6 @@ export const handler: Handlers<Data> = {
 };
 
 export default function Home(props: PageProps<Data>) {
-  const currentPath = decodeURIComponent(props.url.pathname);
-  const form = currentPath.substring(currentPath.lastIndexOf("/") + 1);
   const { hanzi } = props.data;
 
   return (
@@ -21,8 +19,8 @@ export default function Home(props: PageProps<Data>) {
       <a href="/hanzi">Back to Hanzi Database</a>
       <div className="h-screen content-center bg-white">
         <div className="flex flex-col items-center">
-          <h3 className="text-3xl font-bold">{form}</h3>
-          <SolutionWriter character={form} label="Animate" />
+          <h3 className="text-3xl font-bold">{hanzi.form}</h3>
+          <SolutionWriter character={hanzi.form} label="Animate" />
           <h6 className="text-left text-lg font-bold underline">
             {hanzi.sound}
           </h6>

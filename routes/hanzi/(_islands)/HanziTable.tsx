@@ -45,7 +45,7 @@ export default function HanziTable({ props }: { props: HanziTableProps }) {
               {pageNumbers[index]}
             </td>
             <td className="w-20 p-1 border border-gray-500 text-center text-blue-500">
-              <a href={"/hanzi" + `/${hanzi.form}`}>{hanzi.form}</a>
+              <a href={"/hanzi" + `/${hanzi.id}`}>{hanzi.form}</a>
             </td>
             <td className="w-20 p-1 border border-gray-500 text-center">
               {hanzi.sound}
