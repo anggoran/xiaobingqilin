@@ -20,6 +20,7 @@ import * as $Label from "./islands/Label.tsx";
 import * as $Menu from "./islands/Menu.tsx";
 import * as $SolutionWriter from "./islands/SolutionWriter.tsx";
 import * as $SoundButton from "./islands/SoundButton.tsx";
+import * as $hanzi_islands_HanziTable from "./routes/hanzi/(_islands)/HanziTable.tsx";
 import * as $writing_islands_QuizWriter from "./routes/writing/(_islands)/QuizWriter.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -45,6 +46,7 @@ const manifest = {
     "./islands/Menu.tsx": $Menu,
     "./islands/SolutionWriter.tsx": $SolutionWriter,
     "./islands/SoundButton.tsx": $SoundButton,
+    "./routes/hanzi/(_islands)/HanziTable.tsx": $hanzi_islands_HanziTable,
     "./routes/writing/(_islands)/QuizWriter.tsx": $writing_islands_QuizWriter,
   },
   baseUrl: import.meta.url,
