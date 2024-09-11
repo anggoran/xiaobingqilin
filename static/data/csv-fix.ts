@@ -142,7 +142,15 @@ interface Unihan {
   etymology: string;
 }
 
+interface SupabasePinyin {
+  id: number;
+  name: string;
+  latin: string;
+  tone: number | null;
+}
+
 interface SupabaseHanzi {
+  id: number;
   form: string;
   sound: string;
   meaning: string;
@@ -152,6 +160,7 @@ interface SupabaseHanzi {
 
 const cedictList: Cedict[] = [];
 const unihanList: Unihan[] = [];
+const supabasePinyinList: SupabasePinyin[] = [];
 const supabaseHanziList: SupabaseHanzi[] = [];
 
 // read Cedict TXT
@@ -218,6 +227,22 @@ const readUnihanTXT = async () => {
   });
 };
 
+// read Supabase Pinyin CSV, push to supabasePinyinList
+const readSupabasePinyinCSV = async () => {
+  const pinyinLines = await Deno.readTextFile(
+    "./static/data/supabase-pinyin.csv",
+  );
+  pinyinLines.split("\n").slice(1).map((line) => {
+    const [id, name, latin, tone] = line.split(",");
+    supabasePinyinList.push({
+      id: parseInt(id),
+      name,
+      latin,
+      tone: tone === "" ? null : parseInt(tone),
+    });
+  });
+};
+
 // create Supabase Hanzi List
 const createSupabaseHanziList = async () => {
   await readCedictTXT();
@@ -233,6 +258,7 @@ const createSupabaseHanziList = async () => {
     // });
     if (unihan) {
       const data: SupabaseHanzi = {
+        id: supabaseHanziList.length + 1,
         form: cedict.simplified,
         // sound: newCedictPinyin,
         // sound: (supabasePinyin?.id ?? cedict.pinyin).toString(),
@@ -246,13 +272,15 @@ const createSupabaseHanziList = async () => {
   });
 };
 
+await readSupabasePinyinCSV();
 await createSupabaseHanziList();
 
 // create Supabase Hanzi CSV
 const createSupabaseHanziCSV = async () => {
   const hanUTF = "\ufeff";
-  const csvHeader = "form,meaning,type,etymology" + "\n";
+  const csvHeader = "id,form,meaning,type,etymology" + "\n";
   const csvContent = supabaseHanziList.map((data) => {
+    const id = data.id;
     const form = data.form;
     // const sound = data.sound;
     const meaning = `"${data.meaning.replaceAll(/"/g, '""')}"`;
@@ -260,7 +288,7 @@ const createSupabaseHanziCSV = async () => {
     const etymology = data.etymology
       ? `"${data.etymology.replaceAll(/"/g, '""')}"`
       : "";
-    return [form, meaning, type, etymology].join(",");
+    return [id, form, meaning, type, etymology].join(",");
   }).join("\n");
 
   await Deno.writeTextFile(
@@ -272,11 +300,14 @@ const createSupabaseHanziCSV = async () => {
 // create Supabase Hanzi CSV
 const createSupabaseHanziPinyinCSV = async () => {
   const hanUTF = "\ufeff";
-  const csvHeader = "hanzi,pinyin" + "\n";
-  const csvContent = supabaseHanziList.map((data) => {
-    const hanzi = data.form;
-    const pinyin = data.sound;
-    return [hanzi, pinyin].join(",");
+  const csvHeader = "id,hanzi_id,pinyin_id" + "\n";
+  const csvContent = supabaseHanziList.map((data, index) => {
+    const id = index + 1;
+    const hanzi_id = index + 1;
+    const pinyin_id = supabasePinyinList.find((e) =>
+      (e.latin + (e.tone ?? "")) === data.sound
+    )?.id;
+    return [id, hanzi_id, pinyin_id].join(",");
   }).join("\n");
 
   await Deno.writeTextFile(
