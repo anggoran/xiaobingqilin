@@ -1,5 +1,5 @@
 import { FreshContext } from "$fresh/server.ts";
-import { HanziModel } from "../models/hanzi.ts";
+import { HanziPinyinModel } from "../models/hanzi.ts";
 import { supabase } from "../utils/supabase.ts";
 
 export const getHanziList = async (
@@ -11,15 +11,34 @@ export const getHanziList = async (
   const startIndex = (currentPage - 1) * contentPerPage;
   const endIndex = startIndex + contentPerPage - 1;
 
-  const res = await supabase
-    .from("hanzis")
-    .select("*", { count: "exact" })
-    .range(startIndex, endIndex).order("form", { ascending: true });
-  const data = res.data as HanziModel[];
+  const res = await supabase.from("hanzis_pinyins").select(
+    `
+    id,
+    hanzi_id (form, meaning),
+    pinyin_id (name)
+  `,
+    { count: "exact" },
+  )
+    .range(startIndex, endIndex).order("hanzi_id (form)", { ascending: true });
+
+  const data = res.data?.map((e) => {
+    const hanzi = Array.isArray(e.hanzi_id) ? e.hanzi_id[0] : e.hanzi_id;
+    const pinyin = Array.isArray(e.pinyin_id) ? e.pinyin_id[0] : e.pinyin_id;
+    return {
+      id: e.id,
+      hanzi: {
+        form: hanzi.form,
+        meaning: hanzi.meaning,
+      },
+      pinyin: {
+        name: pinyin.name,
+      },
+    };
+  }) as HanziPinyinModel[];
 
   return ctx.render({
     totalPages: res.count! / contentPerPage,
-    hanziList: data,
+    hpList: data,
     startOrder: startIndex + 1,
     endOrder: endIndex + 1,
   });
@@ -30,8 +49,33 @@ export const getHanziDetail = async (
   ctx: FreshContext,
 ) => {
   const id = decodeURIComponent(ctx.params["id"]);
-  const res = await supabase.from("hanzis").select("*").eq("id", id);
-  const data = res.data as HanziModel[];
 
-  return ctx.render({ hanzi: data[0] });
+  const res = await supabase.from("hanzis_pinyins").select(
+    `
+    id, 
+    hanzi_id (form, meaning, type, etymology), 
+    pinyin_id (name, latin, tone)
+  `,
+  ).eq("id", id);
+
+  const data = res.data?.map((e) => {
+    const hanzi = Array.isArray(e.hanzi_id) ? e.hanzi_id[0] : e.hanzi_id;
+    const pinyin = Array.isArray(e.pinyin_id) ? e.pinyin_id[0] : e.pinyin_id;
+    return {
+      id: e.id,
+      hanzi: {
+        form: hanzi.form,
+        meaning: hanzi.meaning,
+        type: hanzi.type,
+        etymology: hanzi.etymology,
+      },
+      pinyin: {
+        name: pinyin.name,
+        latin: pinyin.latin,
+        tone: pinyin.tone,
+      },
+    };
+  }) as HanziPinyinModel[];
+
+  return ctx.render(data[0]);
 };
