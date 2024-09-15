@@ -1,10 +1,13 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { getHanziDetail } from "../../controllers/hanzi.ts";
 import SolutionWriter from "../../islands/SolutionWriter.tsx";
-import { HanziModel } from "../../models/hanzi.ts";
+import { SoundButton } from "../../islands/SoundButton.tsx";
+import { HanziModel, PinyinModel } from "../../models/hanzi.ts";
 
 interface Data {
+  id: number;
   hanzi: HanziModel;
+  pinyin: PinyinModel;
 }
 
 export const handler: Handlers<Data> = {
@@ -12,7 +15,7 @@ export const handler: Handlers<Data> = {
 };
 
 export default function Home(props: PageProps<Data>) {
-  const { hanzi } = props.data;
+  const { hanzi, pinyin } = props.data;
 
   return (
     <>
@@ -21,8 +24,11 @@ export default function Home(props: PageProps<Data>) {
         <div className="flex flex-col items-center">
           <h3 className="text-3xl font-bold">{hanzi.form}</h3>
           <SolutionWriter character={hanzi.form} label="Animate" />
-          <h6 className="text-left text-lg font-bold underline">
-            {hanzi.sound}
+          <h6 className="text-left text-lg font-bold outline outline-2 px-4 rounded-md my-2">
+            <SoundButton
+              text={pinyin.name}
+              sound={pinyin.latin! + pinyin.tone!}
+            />
           </h6>
           <p className="text-left text-base">
             <ul>
@@ -31,7 +37,7 @@ export default function Home(props: PageProps<Data>) {
                 : <li>{hanzi.meaning}</li>}
             </ul>
           </p>
-          <h6 className="text-left text-lg font-bold underline">
+          <h6 className="text-left text-lg font-bold underline my-2">
             {hanzi.type}
           </h6>
           <p className="text-left text-base">

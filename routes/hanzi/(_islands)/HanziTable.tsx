@@ -1,13 +1,13 @@
 import { useSignal } from "@preact/signals";
-import { HanziModel } from "../../../models/hanzi.ts";
+import { HanziPinyinModel } from "../../../models/hanzi.ts";
 
 interface HanziTableProps {
-  hanziList: HanziModel[];
+  hpList: HanziPinyinModel[];
   pageNumbers: number[];
 }
 
 export default function HanziTable({ props }: { props: HanziTableProps }) {
-  const { hanziList, pageNumbers } = props;
+  const { hpList, pageNumbers } = props;
   const expanded = useSignal<number[]>([]);
 
   const hasLongChars = (meaning: string) => {
@@ -39,36 +39,40 @@ export default function HanziTable({ props }: { props: HanziTableProps }) {
         </tr>
       </thead>
       <tbody>
-        {hanziList.map((hanzi, index) => (
-          <tr key={index}>
-            <td className="w-16 p-1 border border-gray-500 text-center">
-              {pageNumbers[index]}
-            </td>
-            <td className="w-20 p-1 border border-gray-500 text-center text-blue-500">
-              <a href={"/hanzi" + `/${hanzi.id}`}>{hanzi.form}</a>
-            </td>
-            <td className="w-20 p-1 border border-gray-500 text-center">
-              {hanzi.sound}
-            </td>
-            <td className="w-96 text-sm px-2 py-1 border border-gray-500">
-              <ul className={styledCell(hanzi.meaning, index)}>
-                {hanzi.meaning.split(";").length > 1
-                  ? hanzi.meaning.split(";").map((elem) => (
-                    <li>{"• " + elem.trim()}</li>
-                  ))
-                  : <li>{hanzi.meaning}</li>}
-              </ul>
-              {hasLongChars(hanzi.meaning) && (
-                <button
-                  onClick={() => expandRow(index)}
-                  className="text-xs p-1 bg-white rounded border border-gray-300 hover:bg-gray-50"
-                >
-                  {expanded.value.includes(index) ? "Collapse" : "Expand"}
-                </button>
-              )}
-            </td>
-          </tr>
-        ))}
+        {hpList.map((elem, index) => {
+          const { id, hanzi, pinyin } = elem;
+
+          return (
+            <tr key={index}>
+              <td className="w-16 p-1 border border-gray-500 text-center">
+                {pageNumbers[index]}
+              </td>
+              <td className="w-20 p-1 border border-gray-500 text-center text-blue-500">
+                <a href={"/hanzi" + `/${id}`}>{hanzi.form}</a>
+              </td>
+              <td className="w-20 p-1 border border-gray-500 text-center">
+                {pinyin.name}
+              </td>
+              <td className="w-96 text-sm px-2 py-1 border border-gray-500">
+                <ul className={styledCell(hanzi.meaning, index)}>
+                  {hanzi.meaning.split(";").length > 1
+                    ? hanzi.meaning.split(";").map((elem) => (
+                      <li>{"• " + elem.trim()}</li>
+                    ))
+                    : <li>{hanzi.meaning}</li>}
+                </ul>
+                {hasLongChars(hanzi.meaning) && (
+                  <button
+                    onClick={() => expandRow(index)}
+                    className="text-xs p-1 bg-white rounded border border-gray-300 hover:bg-gray-50"
+                  >
+                    {expanded.value.includes(index) ? "Collapse" : "Expand"}
+                  </button>
+                )}
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
