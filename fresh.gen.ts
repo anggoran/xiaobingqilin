@@ -6,7 +6,7 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
-import * as $hanzi_hanzi_ from "./routes/hanzi/[hanzi].tsx";
+import * as $hanzi_id_ from "./routes/hanzi/[id].tsx";
 import * as $hanzi_index from "./routes/hanzi/index.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $listening_index from "./routes/listening/index.tsx";
@@ -30,7 +30,7 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/api/joke.ts": $api_joke,
     "./routes/greet/[name].tsx": $greet_name_,
-    "./routes/hanzi/[hanzi].tsx": $hanzi_hanzi_,
+    "./routes/hanzi/[id].tsx": $hanzi_id_,
     "./routes/hanzi/index.tsx": $hanzi_index,
     "./routes/index.tsx": $index,
     "./routes/listening/index.tsx": $listening_index,

@@ -47,7 +47,7 @@ export default function ListeningPage(props: PageProps<Data>) {
       >
         <div className="flex flex-col items-center space-y-4">
           <SoundButton
-            sound_id={question}
+            sound={question}
             text={solution ?? "🔈"}
           />
           <Label

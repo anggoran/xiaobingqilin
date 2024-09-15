@@ -1,13 +1,13 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import PageNavigator from "../../components/PageNavigator.tsx";
 import { getHanziList } from "../../controllers/hanzi.ts";
-import { HanziModel } from "../../models/hanzi.ts";
+import { HanziPinyinModel } from "../../models/hanzi.ts";
 import { paginate } from "../../utils/paginate.ts";
 import HanziTable from "./(_islands)/HanziTable.tsx";
 
 interface Data {
   totalPages: number;
-  hanziList: HanziModel[];
+  hpList: HanziPinyinModel[];
   startOrder: number;
   endOrder: number;
 }
@@ -18,7 +18,7 @@ export const handler: Handlers<Data> = {
 
 export default function HanziPage(props: PageProps<Data>) {
   const currentPage = parseInt(props.url.searchParams.get("page") || "1");
-  const { totalPages, hanziList, startOrder, endOrder } = props.data;
+  const { totalPages, hpList, startOrder, endOrder } = props.data;
   const pagination = paginate(currentPage, totalPages);
 
   const pageNumbers = Array.from(
@@ -32,7 +32,7 @@ export default function HanziPage(props: PageProps<Data>) {
       <div className="h-auto content-center bg-white">
         <div className="flex flex-col items-center space-y-4">
           <p className="font-bold">Page {currentPage}</p>
-          <HanziTable props={{ hanziList, pageNumbers }} />
+          <HanziTable props={{ hpList, pageNumbers }} />
           <PageNavigator props={{ currentPage, totalPages, pagination }} />
         </div>
       </div>
