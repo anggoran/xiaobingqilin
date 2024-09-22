@@ -69,7 +69,7 @@ const writeHanziPinyinCSV = async () => {
   const content = CSV.stringify(hpList as unknown as CSV.DataItem[], {
     columns: ["hanzi_id", "pinyin_id"],
   });
-  await Deno.writeTextFile("./static/data/hanzi_pinyin.csv", content);
+  await Deno.writeTextFile("./static/data/hanzipinyin.csv", content);
 };
 
 await writeHanziPinyinCSV();
