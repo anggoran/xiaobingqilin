@@ -26,7 +26,7 @@ export default function Home(props: PageProps<Data>) {
           <SolutionWriter character={hanzi.form} label="Animate" />
           <h6 className="text-left text-lg font-bold outline outline-2 px-4 rounded-md my-2">
             <SoundButton
-              text={pinyin.name}
+              text={pinyin.sound}
               sound={pinyin.latin! + pinyin.tone!}
             />
           </h6>

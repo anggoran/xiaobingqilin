@@ -51,7 +51,7 @@ export default function HanziTable({ props }: { props: HanziTableProps }) {
                 <a href={"/hanzi" + `/${id}`}>{hanzi.form}</a>
               </td>
               <td className="w-20 p-1 border border-gray-500 text-center">
-                {pinyin.name}
+                {pinyin.sound}
               </td>
               <td className="w-96 text-sm px-2 py-1 border border-gray-500">
                 <ul className={styledCell(hanzi.meaning, index)}>
