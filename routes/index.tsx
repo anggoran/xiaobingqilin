@@ -10,6 +10,7 @@ export default function Home() {
               "/reading",
               "/writing",
               "/hanzi",
+              "/word",
             ].map((e) => (
               <li>
                 <a
