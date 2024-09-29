@@ -5,6 +5,7 @@ import * as listening from "./listening.ts";
 import * as reading from "./reading.ts";
 import * as writing from "./writing.ts";
 import * as hanzi from "./hanzi.ts";
+import * as word from "./word.ts";
 
 export const CONNECTION: ServeHandlerInfo = {
   remoteAddr: { hostname: "localhost", port: 8000, transport: "tcp" },
@@ -36,4 +37,9 @@ Deno.test("Feature: Writing Hanzi", async (t) => {
 Deno.test("Feature: Hanzi Database", async (t) => {
   await t.step("Show Hanzi List Page", hanzi.getHanziList);
   await t.step("Show Hanzi Detail Page", hanzi.getHanziDetail);
+});
+
+Deno.test("Feature: Word Database", async (t) => {
+  await t.step("Show Search Form", word.getSearchPage);
+  await t.step("Show Search Result", word.getSearchResult);
 });
