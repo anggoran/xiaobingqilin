@@ -15,7 +15,7 @@ export const getHanziList = async (
     `
     id,
     hanzi_id (form, meaning),
-    pinyin_id (name)
+    pinyin_id (sound)
   `,
     { count: "exact" },
   )
@@ -31,7 +31,7 @@ export const getHanziList = async (
         meaning: hanzi.meaning,
       },
       pinyin: {
-        name: pinyin.name,
+        sound: pinyin.sound,
       },
     };
   }) as HanziPinyinModel[];
@@ -54,7 +54,7 @@ export const getHanziDetail = async (
     `
     id, 
     hanzi_id (form, meaning, type, etymology), 
-    pinyin_id (name, latin, tone)
+    pinyin_id (sound, latin, tone)
   `,
   ).eq("id", id);
 
@@ -70,7 +70,7 @@ export const getHanziDetail = async (
         etymology: hanzi.etymology,
       },
       pinyin: {
-        name: pinyin.name,
+        sound: pinyin.sound,
         latin: pinyin.latin,
         tone: pinyin.tone,
       },
