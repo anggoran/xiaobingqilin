@@ -2,7 +2,7 @@ import { assert } from "$std/assert/assert.ts";
 import { CONNECTION, handler } from "./main_test.ts";
 
 export const getHanziList = async () => {
-  const req = new Request("http://localhost/hanzi?page=111");
+  const req = new Request("http://localhost/hanzi?page=115");
   const resp = await handler(req, CONNECTION);
   const text = await resp.text();
 
@@ -16,18 +16,18 @@ export const getHanziList = async () => {
     const headerHTML = "[_]</th>";
     assert(text.includes(headerHTML.replace("[_]", header)));
   });
-  assert(text.includes("1102</td>"));
-  assert(text.includes('<a href="/hanzi/975">只</a></td>'));
-  assert(text.includes("zhǐ</td>"));
+  assert(text.includes("1141</td>"));
+  assert(text.includes('<a href="/hanzi/244">和</a></td>'));
+  assert(text.includes("hé</td>"));
   assert(
     text.includes(
-      "<li>• only</li><li>• merely</li><li>• just</li></ul>",
+      "<li>• harmony, peace</li><li>• calm, peaceful</li></ul>",
     ),
   );
 };
 
 export const getHanziDetail = async () => {
-  const req = new Request("http://localhost/hanzi/1811");
+  const req = new Request("http://localhost/hanzi/371");
   const resp = await handler(req, CONNECTION);
   const text = await resp.text();
 
@@ -37,8 +37,10 @@ export const getHanziDetail = async () => {
 
   assert(text.includes("hǎo</button>"));
   assert(
-    text.includes("<li>• good</li><li>•  appropriate</li><li>•  proper</li>"),
+    text.includes(
+      "<li>• good, excellent, fine</li><li>•  proper, suitable</li><li>•  well</li></ul>",
+    ),
   );
   assert(text.includes("ideographic</h6>"));
-  assert(text.includes("A woman 女 with a son 子</p>"));
+  assert(text.includes("A woman 女 with a son 子</p>"));
 };
