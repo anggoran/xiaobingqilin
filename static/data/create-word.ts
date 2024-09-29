@@ -1,26 +1,23 @@
 import * as CSV from "jsr:@std/csv";
 
 interface Word {
-  hanzi_pinyin_ids: (number | undefined)[];
+  hanzi: string;
+  pinyin: string;
   english: string;
 }
 
 const readPinyinCSV = async () => {
   const content = await Deno.readTextFile("./static/data/pinyin.csv");
-  return CSV.parse(content).map((row) => row[1] + row[2]).slice(1);
+  return CSV.parse(content).map((row) => ({
+    sound: row[0],
+    latin: row[1],
+    tone: row[2],
+  })).slice(1);
 };
 
 const readHanziCSV = async () => {
   const content = await Deno.readTextFile("./static/data/hanzi.csv");
   return CSV.parse(content).map((row) => row[0]).slice(1);
-};
-
-const readHanziPinyinCSV = async () => {
-  const content = await Deno.readTextFile("./static/data/hanzipinyin.csv");
-  return CSV.parse(content).map((row) => ({
-    hanzi_id: parseInt(row[0]),
-    pinyin_id: parseInt(row[1]),
-  })).slice(1);
 };
 
 const readCedictTXT = async () => {
@@ -41,8 +38,8 @@ const createCedictList = async () => {
     cedictList.push({
       hanzis: parts[1],
       pinyins: parts.slice(2, parts.findIndex((e) => e.endsWith("]")) + 1)
-        .join(" ").slice(1, -1).toLowerCase().replaceAll("u:", "v")
-        .replaceAll("5", ""),
+        .join(" ").slice(1, -1).toLowerCase()
+        .replaceAll("5", "").replaceAll("u:", "v").replaceAll(/\br\b/g, "er"),
       english: parts.slice(parts.findIndex((e) => e.endsWith("]")) + 1)
         .join(" ").replaceAll("/", "; ").slice(2, -3),
     });
@@ -52,31 +49,18 @@ const createCedictList = async () => {
 
 const createWordList = async () => {
   const pinyinList = await readPinyinCSV();
-  const hanziList = await readHanziCSV();
-  const hpList = await readHanziPinyinCSV();
   const cedictList = await createCedictList();
-
-  const hMap = new Map(hanziList.map((h, index) => [h, index + 1]));
-  const pMap = new Map(pinyinList.map((p, index) => [p, index + 1]));
-  const hpMap = new Map(
-    hpList.map((hp, index) => [`${hp.hanzi_id}-${hp.pinyin_id}`, index + 1]),
-  );
 
   const wordList: Word[] = [];
   cedictList.forEach((cedict) => {
-    const cedictHanzis = cedict.hanzis.split("");
-    const cedictPinyins = cedict.pinyins.split(" ");
-    const hpIndices = cedictHanzis.map((hanzi, index) => {
-      const pinyin = cedictPinyins[index];
-      const hanziID = hMap.get(hanzi);
-      const pinyinID = pMap.get(pinyin);
-      return hanziID !== undefined && pinyinID !== undefined
-        ? hpMap.get(`${hanziID}-${pinyinID}`)
-        : undefined;
-    }).filter((index) => index !== undefined);
-
+    const pinyinData: string[] = [];
+    cedict.pinyins.split(" ").forEach((cp) => {
+      const pinyin = pinyinList.find((p) => (p.latin + p.tone) === cp);
+      if (pinyin) pinyinData.push(pinyin.sound);
+    });
     wordList.push({
-      hanzi_pinyin_ids: hpIndices,
+      hanzi: cedict.hanzis,
+      pinyin: pinyinData.join(" "),
       english: cedict.english,
     });
   });
@@ -87,7 +71,7 @@ const createWordList = async () => {
 const writeWordCSV = async () => {
   const wordList = await createWordList();
   const content = CSV.stringify(wordList as unknown as CSV.DataItem[], {
-    columns: ["hanzi_pinyin_ids", "english"],
+    columns: ["hanzi", "pinyin", "english"],
   });
   await Deno.writeTextFile("./static/data/word.csv", content);
 };

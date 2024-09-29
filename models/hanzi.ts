@@ -1,3 +1,10 @@
+export interface WordModel {
+  id: number;
+  hanzi: string;
+  pinyin: string;
+  english: string;
+}
+
 export interface HanziPinyinModel {
   id: number;
   hanzi: HanziModel;
@@ -14,7 +21,7 @@ export interface HanziModel {
 
 export interface PinyinModel {
   id: number;
-  name: string;
+  sound: string;
   latin: string;
   tone: number | null;
 }
