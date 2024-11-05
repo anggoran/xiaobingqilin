@@ -1,27 +1,17 @@
 import { Signal, signal } from "@preact/signals";
-import { Dropdown } from "../../islands/Dropdown.tsx";
-import { Menu } from "../../islands/Menu.tsx";
 import { SoundButton } from "../../islands/SoundButton.tsx";
-import { Label } from "../../islands/Label.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import {
-  AnswerModel,
-  PinyinModel,
-  PinyinPartModel,
-} from "../../models/pinyin.ts";
 import { getListening, postListening } from "../../controllers/listening.ts";
+import { PinyinModel, tones } from "../../models/pinyin.ts";
+import Autocomplete from "../../islands/Autocomplete.tsx";
+import Dropdown from "../../islands/Dropdown.tsx";
 
 interface Data {
+  id: number;
   question: string;
-  answer: AnswerModel;
   solution: string | null;
-  truth: boolean | null;
-  options: {
-    pinyins: PinyinModel[];
-    initials: PinyinPartModel[];
-    finals: PinyinPartModel[];
-    tones: PinyinPartModel[];
-  };
+  answer: PinyinModel;
+  truth: boolean | undefined;
 }
 
 export const handler: Handlers<Data> = {
@@ -30,9 +20,8 @@ export const handler: Handlers<Data> = {
 };
 
 export default function ListeningPage(props: PageProps<Data>) {
-  const { question, answer, solution, truth, options } = props.data;
-  const answerState: Signal<AnswerModel> = signal({ ...answer });
-
+  const { id, question, answer, solution, truth } = props.data;
+  const answerState: Signal<PinyinModel> = signal({ latin: "", tone: null });
   return (
     <>
       <a href="/">Back to home</a>
@@ -48,49 +37,43 @@ export default function ListeningPage(props: PageProps<Data>) {
         <div className="flex flex-col items-center space-y-4">
           <SoundButton
             sound={question}
-            text={solution ?? "🔈"}
+            text={solution ? `The solution: ${solution}` : "🔈"}
           />
-          <Label
-            props={{
-              models: options.pinyins,
-              data: answerState,
-            }}
-          />
-          <form id="quiz">
-            <input type="hidden" name="question" value={question} />
-            <div className="flex flex-row space-x-8">
-              <Menu
-                props={{
-                  section: "initial",
-                  model: options.initials,
-                  data: answerState,
-                }}
-              />
-              <Menu
-                props={{
-                  section: "final",
-                  model: options.finals,
-                  data: answerState,
-                }}
-              />
-              <Dropdown
-                props={{
-                  section: "tone",
-                  model: options.tones,
-                  data: answerState,
-                }}
-              />
-            </div>
-          </form>
-          {truth !== null
-            ? <a href="/listening">Continue</a>
+          {truth !== undefined
+            ? (
+              <>
+                <p>Your answer: {answer}</p>
+                <a href="/listening">Continue</a>
+              </>
+            )
             : (
-              <div className="flex flex-row space-x-8">
-                <button form="quiz" type="reset">Clear</button>
-                <button form="quiz" type="submit" formmethod="POST">
-                  Submit
-                </button>
-              </div>
+              <>
+                <form id="quiz">
+                  <input type="hidden" name="q_id" value={id} />
+                  <div className="flex flex-row space-x-8">
+                    <Autocomplete
+                      props={{
+                        field: "latin",
+                        endpoint: `/api/listening?keyword=`,
+                        state: answerState,
+                      }}
+                    />
+                    <Dropdown
+                      props={{
+                        field: "tone",
+                        options: tones,
+                        state: answerState,
+                      }}
+                    />
+                  </div>
+                </form>
+                <div className="flex flex-row space-x-8">
+                  <button form="quiz" type="reset">Clear</button>
+                  <button form="quiz" type="submit" formmethod="POST">
+                    Submit
+                  </button>
+                </div>
+              </>
             )}
         </div>
       </div>
