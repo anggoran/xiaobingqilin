@@ -1,27 +1,25 @@
 import { Signal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
-import { PinyinPartModel } from "../models/pinyin.ts";
-import { AnswerModel } from "../models/pinyin.ts";
 
 interface DropdownProps {
-  section: string;
-  model: PinyinPartModel[] | undefined;
-  data: Signal<AnswerModel>;
+  field: string;
+  options: { label: string; value: string | number | null }[] | undefined;
+  state: Signal;
 }
 
-export function Dropdown({ props }: { props: DropdownProps }) {
+export default function Dropdown({ props }: { props: DropdownProps }) {
   const handleChange = (e: JSX.TargetedEvent) => {
     const selected = (e.target as HTMLInputElement).value;
-    props.data.value = {
-      ...props.data.value,
-      [`${props.section}_id`]: props.model?.find((e) => e.name == selected)?.id,
-    };
+    props.state.value[props.field] = selected;
+    console.log(props.state.value);
   };
 
   return (
-    <select name={props.section} onChange={handleChange}>
-      <option value="" hidden disabled selected>{props.section}</option>
-      {props?.model?.map((e) => <option value={e.name}>{e.name}</option>)}
+    <select name={props.field} onChange={handleChange}>
+      <option value="" hidden disabled selected>{props.field}</option>
+      {props?.options?.map((e) => (
+        <option value={e.value?.toString() ?? ""}>{e.label}</option>
+      ))}
     </select>
   );
 }
