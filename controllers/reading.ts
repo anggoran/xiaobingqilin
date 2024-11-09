@@ -1,7 +1,30 @@
 import { FreshContext } from "$fresh/server.ts";
-import { HanziModel, PinyinModel, PinyinPartModel } from "../models/pinyin.ts";
-import { readJSON } from "../utils/read-json.ts";
-import { readTXT } from "../utils/read-txt.ts";
+import { supabase } from "../utils/supabase.ts";
+
+export interface ReadingQuizProps {
+  id: string;
+  question: string;
+  answer: string | undefined;
+  hint: string;
+  solutions: string[];
+  truth: boolean | undefined;
+}
+interface HanziPinyinData {
+  id: string;
+  hanzi: {
+    form: string;
+    meaning: string;
+  };
+  pinyin: {
+    sound: string;
+  };
+}
+
+interface HanziData {
+  id: string;
+  form: string;
+  meaning: string;
+}
 
 export const getReading = (
   _req: Request,
@@ -27,56 +50,48 @@ export const getReadingQuiz = async (
   const url = new URL(req.url);
   const params = {
     quiz: ctx.params["quiz"],
-    question: url.searchParams.get("question"),
-    answer: url.searchParams.get("answer"),
+    question: url.searchParams.get("q_id"),
+    answer: url.searchParams.get("a"),
   };
 
-  const hanziTXT: string[] = await readTXT("unihan");
-  const pinyinJSON: PinyinModel[] = await readJSON("pinyins");
-  const initialJSON: PinyinPartModel[] = await readJSON("initials");
-  const finalJSON: PinyinPartModel[] = await readJSON("finals");
-  const toneJSON: PinyinPartModel[] = await readJSON("tones");
+  let props: ReadingQuizProps;
+  let truth: boolean | undefined;
 
-  const hanziList = decodeURIComponent(params.quiz).split("");
-  const randomNumber = Math.floor(Math.random() * hanziList.length);
-  const randomHanzi: HanziModel = JSON.parse(
-    hanziTXT.find((e) =>
-      e.includes(`"character":"${hanziList[randomNumber]}"`)
-    )!,
-  );
-
-  let question = randomHanzi.character;
-  let hint = randomHanzi.definition;
-  let answer = { initial_id: 0, final_id: 0, tone_id: 0 };
-  let solution = null;
-  let truth = null;
-
-  if (params.question !== null && params.answer !== null) {
-    const currentHanzi: HanziModel = JSON.parse(
-      hanziTXT.find((e) => e.includes(`"character":"${params.question}"`))!,
-    );
-    const currentAnswer = pinyinJSON.find((e) => e.name === params.answer)!;
-
-    question = currentHanzi.character;
-    hint = currentHanzi.definition;
-    answer = { ...currentAnswer };
-    solution = currentHanzi.pinyin[0];
-    truth = solution === currentAnswer.name;
+  if (params.answer) {
+    const res = await supabase.from("hanzis_pinyins")
+      .select("id, hanzi:hanzi_id (form, meaning), pinyin:pinyin_id (sound)")
+      .eq("hanzi_id", parseInt(params.question!))
+      .returns<HanziPinyinData[]>();
+    const [{ hanzi: { form, meaning } }] = res.data!;
+    const solutions = res.data!.map(({ pinyin: { sound } }) => sound);
+    truth = solutions.includes(params.answer);
+    props = {
+      id: params.question!,
+      question: form,
+      hint: meaning,
+      solutions,
+      answer: params.answer,
+      truth,
+    };
+  } else {
+    const hanziList = decodeURIComponent(params.quiz).split("");
+    const randomNumber = Math.floor(Math.random() * hanziList.length);
+    const res = await supabase.from("hanzis")
+      .select("id, form, meaning")
+      .eq("form", hanziList[randomNumber])
+      .returns<HanziData>()
+      .single();
+    const { id, form, meaning } = res.data!;
+    props = {
+      id,
+      question: form,
+      hint: meaning,
+      solutions: [],
+      answer: undefined,
+      truth: undefined,
+    };
   }
-
-  return ctx.render({
-    question,
-    hint,
-    answer,
-    solution,
-    truth,
-    options: {
-      pinyins: pinyinJSON,
-      initials: initialJSON,
-      finals: finalJSON,
-      tones: toneJSON,
-    },
-  });
+  return ctx.render(props);
 };
 
 export const postReadingQuiz = async (
@@ -86,36 +101,18 @@ export const postReadingQuiz = async (
   const url = new URL(req.url);
   const form = await req.formData();
   const entries = {
-    question: form.get("question"),
-    initial: form.get("initial"),
-    final: form.get("final"),
+    q_id: form.get("q_id"),
+    latin: form.get("latin"),
     tone: form.get("tone"),
   };
 
-  const hanziTXT: string[] = await readTXT("unihan");
-  const pinyinJSON: PinyinModel[] = await readJSON("pinyins");
-  const initialJSON: PinyinPartModel[] = await readJSON("initials");
-  const finalJSON: PinyinPartModel[] = await readJSON("finals");
-  const toneJSON: PinyinPartModel[] = await readJSON("tones");
+  const { data } = await supabase.from("pinyins")
+    .select("sound")
+    .eq("latin", entries.latin).eq("tone", entries.tone)
+    .single();
+  const questionURI = encodeURIComponent(entries.q_id as string);
+  const answerURI = encodeURIComponent(data?.sound ?? "N.A.");
 
-  const rawHanzi = hanziTXT.find((e) =>
-    e.includes(`"character":"${entries.question}"`)
-  )!;
-  const hanzi: HanziModel = JSON.parse(rawHanzi);
-  const questionURI = encodeURIComponent(hanzi.character);
-
-  const rawAnswer = {
-    initial_id: initialJSON.find((e) => e.name == entries.initial)!.id,
-    final_id: finalJSON.find((e) => e.name == entries.final)!.id,
-    tone_id: toneJSON.find((e) => e.name == entries.tone)!.id,
-  };
-  const answer = pinyinJSON.find((e) =>
-    e.initial_id === rawAnswer.initial_id &&
-    e.final_id === rawAnswer.final_id &&
-    e.tone_id === rawAnswer.tone_id
-  );
-  const answerURI = encodeURIComponent(answer?.name ?? "N.A.");
-
-  const params = `question=${questionURI}` + "&" + `answer=${answerURI}`;
+  const params = `q_id=${questionURI}` + "&" + `a=${answerURI}`;
   return Response.redirect(`${url}?${params}`, 303);
 };
