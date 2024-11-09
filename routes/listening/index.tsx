@@ -54,7 +54,7 @@ export default function ListeningPage(props: PageProps<Data>) {
                     <Autocomplete
                       props={{
                         field: "latin",
-                        endpoint: `/api/listening?keyword=`,
+                        endpoint: `/api/latin?keyword=`,
                         state: answerState,
                       }}
                     />
