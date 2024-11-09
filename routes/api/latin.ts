@@ -1,5 +1,5 @@
 import { FreshContext } from "$fresh/server.ts";
-import { getLatinList } from "../../controllers/listening.ts";
+import { getLatinList } from "../../controllers/search.ts";
 
 export const handler = async (_req: Request, _ctx: FreshContext) => {
   const url = new URL(_req.url);
