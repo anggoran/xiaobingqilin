@@ -1,6 +1,11 @@
 import { WordModel } from "../models/hanzi.ts";
 import { supabase } from "../utils/supabase.ts";
 
+export const getLatinList = async ({ keyword }: { keyword: string }) => {
+  const { data } = await supabase.rpc("latin_search", { search_term: keyword });
+  return data!.map((e: { latin: string }) => e.latin);
+};
+
 export const getWordList = async (
   { keyword, scroll }: { keyword: string; scroll: number },
 ) => {

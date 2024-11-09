@@ -66,8 +66,3 @@ export const postListening = async (
   const params = `q_id=${questionURI}` + "&" + `a=${answerURI}`;
   return Response.redirect(`${url}?${params}`, 303);
 };
-
-export const getLatinList = async ({ keyword }: { keyword: string }) => {
-  const { data } = await supabase.rpc("latin_search", { search_term: keyword });
-  return data!.map((e: { latin: string }) => e.latin);
-};
