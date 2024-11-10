@@ -27,7 +27,7 @@ export default function ReadingQuizPage(props: PageProps<ReadingQuizProps>) {
           : truth === false
           ? "bg-red-300"
           : "bg-white"
-      } `}
+      }`}
     >
       <div className="flex flex-col items-center space-y-4">
         <div className="text-center space-y-2">

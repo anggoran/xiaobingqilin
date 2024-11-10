@@ -32,7 +32,7 @@ export default function ListeningPage(props: PageProps<Data>) {
             : truth === false
             ? "bg-red-300"
             : "bg-white"
-        } `}
+        }`}
       >
         <div className="flex flex-col items-center space-y-4">
           <SoundButton
