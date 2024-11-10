@@ -1,25 +1,18 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { signal } from "https://esm.sh/v135/@preact/signals-core@1.5.1/dist/signals-core.js";
-import { getWritingQuiz } from "../../controllers/writing.ts";
+import { getWritingQuiz, WritingQuizProps } from "../../controllers/writing.ts";
 import QuizWriter from "./(_islands)/QuizWriter.tsx";
 import SolutionWriter from "../../islands/SolutionWriter.tsx";
 
-interface Data {
-  form: string;
-  sound: string;
-  meaning: string;
-}
-
-export const handler: Handlers<Data> = {
+export const handler: Handlers<WritingQuizProps> = {
   GET: (req, ctx) => getWritingQuiz(req, ctx),
 };
 
-export default function WritingPage(props: PageProps<Data>) {
-  const currentURL = decodeURIComponent(props.url.pathname);
-  const { form, sound, meaning } = props.data;
-  const nextURL = currentURL.replace(form, "");
-
+export default function WritingPage(props: PageProps<WritingQuizProps>) {
+  const { form, meaning, sounds } = props.data;
   const quizState = signal(false);
+  const currentURL = decodeURIComponent(props.url.pathname);
+  const nextURL = currentURL.replace(form, "");
 
   return (
     <div className="h-screen content-center bg-white">
@@ -28,7 +21,7 @@ export default function WritingPage(props: PageProps<Data>) {
           <p>
             <b>Hint:</b> {meaning}
           </p>
-          <b>Question:</b> {sound}
+          <b>Question:</b> {sounds.length === 1 ? sounds[0] : sounds.join(", ")}
         </div>
         <form id="quiz">
           <input type="hidden" name="hanzi" value={form} />
