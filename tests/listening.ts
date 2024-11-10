@@ -13,10 +13,9 @@ export const getQuestion = async () => {
 
 export const postAnswer = async () => {
   const formData = new FormData();
-  formData.append("question", "生");
-  formData.append("initial", "sh");
-  formData.append("final", "eng");
-  formData.append("tone", "1st tone");
+  formData.append("q_id", "2617");
+  formData.append("latin", "wo");
+  formData.append("tone", "3");
   const req = new Request("http://localhost/listening", {
     method: "POST",
     body: formData,
@@ -24,22 +23,21 @@ export const postAnswer = async () => {
   const resp = await handler(req, CONNECTION).then((value) => {
     const url = new URL(value.headers.get("location")!);
     assertEquals(value.status, 303);
-    assertExists(url.searchParams.get("question"));
-    assertExists(url.searchParams.get("answer"));
+    assertExists(url.searchParams.get("q_id"));
+    assertExists(url.searchParams.get("a"));
     return handler(new Request(url!));
   });
 
   const text = await resp.text();
   assert(resp.ok);
-  assert(text.includes('<button type="button">shēng</button>'));
+  assert(text.includes('<button type="button">The solution: wǒ</button>'));
 };
 
 export const getCorrectState = async () => {
   const formData = new FormData();
-  formData.append("question", "生");
-  formData.append("initial", "sh");
-  formData.append("final", "eng");
-  formData.append("tone", "1st tone");
+  formData.append("q_id", "2323");
+  formData.append("latin", "dei");
+  formData.append("tone", "3");
   const req = new Request("http://localhost/listening", {
     method: "POST",
     body: formData,
@@ -53,16 +51,15 @@ export const getCorrectState = async () => {
   const text = await resp.text();
   assert(resp.ok);
   assert(
-    text.includes('<div class="h-screen content-center bg-green-300 ">'),
+    text.includes('<div class="h-screen content-center bg-green-300">'),
   );
 };
 
 export const getFalseState = async () => {
   const formData = new FormData();
-  formData.append("question", "生");
-  formData.append("initial", "r");
-  formData.append("final", "en");
-  formData.append("tone", "2nd tone");
+  formData.append("q_id", "2323");
+  formData.append("latin", "de");
+  formData.append("tone", "");
   const req = new Request("http://localhost/listening", {
     method: "POST",
     body: formData,
@@ -76,6 +73,6 @@ export const getFalseState = async () => {
   const text = await resp.text();
   assert(resp.ok);
   assert(
-    text.includes('<div class="h-screen content-center bg-red-300 ">'),
+    text.includes('<div class="h-screen content-center bg-red-300">'),
   );
 };
