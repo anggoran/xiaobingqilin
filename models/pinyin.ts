@@ -1,27 +1,12 @@
 export interface PinyinModel {
-  id: number;
-  name: string;
-  initial_id: number;
-  final_id: number;
-  tone_id: number;
-  sound_id: string;
+  latin: string;
+  tone: number | null;
 }
 
-export interface PinyinPartModel {
-  id: number;
-  name: string;
-}
-
-export interface AnswerModel {
-  initial_id: number;
-  final_id: number;
-  tone_id: number;
-}
-
-export interface HanziModel {
-  character: string;
-  pinyin: string[];
-  definition: string;
-  decomposition: string;
-  radical: string;
-}
+export const tones = [
+  { label: "1st tone", value: 1 },
+  { label: "2nd tone", value: 2 },
+  { label: "3rd tone", value: 3 },
+  { label: "4rd tone", value: 4 },
+  { label: "no tone", value: null },
+];

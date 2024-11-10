@@ -4,6 +4,7 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $api_latin from "./routes/api/latin.ts";
 import * as $api_word from "./routes/api/word.ts";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $hanzi_id_ from "./routes/hanzi/[id].tsx";
@@ -15,6 +16,7 @@ import * as $reading_index from "./routes/reading/index.tsx";
 import * as $word_index from "./routes/word/index.tsx";
 import * as $writing_quiz_ from "./routes/writing/[quiz].tsx";
 import * as $writing_index from "./routes/writing/index.tsx";
+import * as $Autocomplete from "./islands/Autocomplete.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Dropdown from "./islands/Dropdown.tsx";
 import * as $InfiniteWords from "./islands/InfiniteWords.tsx";
@@ -30,6 +32,7 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/api/latin.ts": $api_latin,
     "./routes/api/word.ts": $api_word,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/hanzi/[id].tsx": $hanzi_id_,
@@ -43,6 +46,7 @@ const manifest = {
     "./routes/writing/index.tsx": $writing_index,
   },
   islands: {
+    "./islands/Autocomplete.tsx": $Autocomplete,
     "./islands/Counter.tsx": $Counter,
     "./islands/Dropdown.tsx": $Dropdown,
     "./islands/InfiniteWords.tsx": $InfiniteWords,

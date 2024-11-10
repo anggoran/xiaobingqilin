@@ -1,6 +1,22 @@
 import { FreshContext } from "$fresh/server.ts";
-import { HanziModel } from "../models/pinyin.ts";
-import { readTXT } from "../utils/read-txt.ts";
+import { supabase } from "../utils/supabase.ts";
+
+export interface WritingQuizProps {
+  form: string;
+  meaning: string;
+  sounds: string[];
+}
+
+interface HanziPinyinData {
+  id: string;
+  hanzi: {
+    form: string;
+    meaning: string;
+  };
+  pinyin: {
+    sound: string;
+  };
+}
 
 export const getWriting = (
   _req: Request,
@@ -29,26 +45,16 @@ export const getWritingQuiz = async (
     hanzi: url.searchParams.get("hanzi"),
   };
 
-  const hanziTXT: string[] = await readTXT("unihan");
-
   const hanziList = decodeURIComponent(params.quiz).split("");
   const randomNumber = Math.floor(Math.random() * hanziList.length);
-  const randomHanzi: HanziModel = JSON.parse(
-    hanziTXT.find((e) =>
-      e.includes(`"character":"${hanziList[randomNumber]}"`)
-    )!,
-  );
+  const res = await supabase.from("hanzis_pinyins")
+    .select("id, hanzi:hanzis!inner (form, meaning), pinyin:pinyin_id (sound)")
+    .eq("hanzis.form", hanziList[randomNumber])
+    .returns<HanziPinyinData[]>();
 
-  let form = randomHanzi.character;
-  const sound = randomHanzi.pinyin[0];
-  const meaning = randomHanzi.definition;
+  const [{ hanzi }] = res.data!;
+  const sounds = res.data!.map(({ pinyin: { sound } }) => sound);
+  const props: WritingQuizProps = { ...hanzi, sounds };
 
-  if (params.hanzi !== null) {
-    const currentHanzi: HanziModel = JSON.parse(
-      hanziTXT.find((e) => e.includes(`"character":"${params.hanzi}"`))!,
-    );
-    form = currentHanzi.character;
-  }
-
-  return ctx.render({ form, sound, meaning });
+  return ctx.render(props);
 };

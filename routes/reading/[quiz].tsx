@@ -1,44 +1,24 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
+import { Signal, signal } from "@preact/signals-core";
 import {
-  Signal,
-  signal,
-} from "https://esm.sh/v135/@preact/signals-core@1.5.1/dist/signals-core.js";
-import { getReadingQuiz, postReadingQuiz } from "../../controllers/reading.ts";
-import { Dropdown } from "../../islands/Dropdown.tsx";
-import { Label } from "../../islands/Label.tsx";
-import { Menu } from "../../islands/Menu.tsx";
-import {
-  AnswerModel,
-  PinyinModel,
-  PinyinPartModel,
-} from "../../models/pinyin.ts";
+  getReadingQuiz,
+  postReadingQuiz,
+  ReadingQuizProps,
+} from "../../controllers/reading.ts";
+import Dropdown from "../../islands/Dropdown.tsx";
+import { PinyinModel, tones } from "../../models/pinyin.ts";
+import Autocomplete from "../../islands/Autocomplete.tsx";
 
-interface Data {
-  question: string;
-  hint: string;
-  answer: AnswerModel;
-  solution: string | null;
-  truth: boolean | null;
-  options: {
-    pinyins: PinyinModel[];
-    initials: PinyinPartModel[];
-    finals: PinyinPartModel[];
-    tones: PinyinPartModel[];
-  };
-}
-
-export const handler: Handlers<Data> = {
+export const handler: Handlers<ReadingQuizProps> = {
   GET: async (req, ctx) => await getReadingQuiz(req, ctx),
   POST: async (req, ctx) => await postReadingQuiz(req, ctx),
 };
 
-export default function ReadingQuizPage(props: PageProps<Data>) {
+export default function ReadingQuizPage(props: PageProps<ReadingQuizProps>) {
+  const { id, question, hint, answer, solutions, truth } = props.data;
+  const answerState: Signal<PinyinModel> = signal({ latin: "", tone: null });
   const currentURL = decodeURIComponent(props.url.pathname);
-  const { question, hint, answer, solution, truth, options } = props.data;
   const nextURL = currentURL.replace(question, "");
-
-  const answerState: Signal<AnswerModel> = signal({ ...answer });
-
   return (
     <div
       className={`h-screen content-center ${
@@ -47,66 +27,61 @@ export default function ReadingQuizPage(props: PageProps<Data>) {
           : truth === false
           ? "bg-red-300"
           : "bg-white"
-      } `}
+      }`}
     >
       <div className="flex flex-col items-center space-y-4">
-        <div className="text-center">
+        <div className="text-center space-y-2">
           <p>
             <b>Hint:</b> {hint}
           </p>
           <p>
             <b>Question:</b> {question}
           </p>
-          {truth !== null
+          {truth !== undefined
             ? (
-              <p>
-                <b>Solution:</b> {solution}
-              </p>
+              <>
+                <p>
+                  <b>The solution:</b>{" "}
+                  {solutions.length === 1 ? solutions[0] : solutions.join(", ")}
+                </p>
+                <p>
+                  <b>Your answer:</b> {answer}
+                </p>
+                <div className="mt-4">
+                  <a href={nextURL}>Continue</a>
+                </div>
+              </>
             )
-            : <></>}
+            : (
+              <>
+                <form id="quiz">
+                  <input type="hidden" name="q_id" value={id} />
+                  <div className="flex flex-row space-x-8">
+                    <Autocomplete
+                      props={{
+                        field: "latin",
+                        endpoint: `/api/latin?keyword=`,
+                        state: answerState,
+                      }}
+                    />
+                    <Dropdown
+                      props={{
+                        field: "tone",
+                        options: tones,
+                        state: answerState,
+                      }}
+                    />
+                  </div>
+                </form>
+                <div className="flex flex-row justify-center space-x-8">
+                  <button form="quiz" type="reset">Clear</button>
+                  <button form="quiz" type="submit" formmethod="POST">
+                    Submit
+                  </button>
+                </div>
+              </>
+            )}
         </div>
-        <Label
-          props={{
-            models: options.pinyins,
-            data: answerState,
-          }}
-        />
-        <form id="quiz">
-          <input type="hidden" name="question" value={question} />
-          <div className="flex flex-row space-x-8">
-            <Menu
-              props={{
-                section: "initial",
-                model: options.initials,
-                data: answerState,
-              }}
-            />
-            <Menu
-              props={{
-                section: "final",
-                model: options.finals,
-                data: answerState,
-              }}
-            />
-            <Dropdown
-              props={{
-                section: "tone",
-                model: options.tones,
-                data: answerState,
-              }}
-            />
-          </div>
-        </form>
-        {truth !== null
-          ? <a href={nextURL}>Continue</a>
-          : (
-            <div className="flex flex-row space-x-8">
-              <button form="quiz" type="reset">Clear</button>
-              <button form="quiz" type="submit" formmethod="POST">
-                Submit
-              </button>
-            </div>
-          )}
       </div>
     </div>
   );

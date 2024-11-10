@@ -38,10 +38,9 @@ export const startQuiz = async () => {
 
 export const postAnswer = async () => {
   const formData = new FormData();
-  formData.append("question", "我");
-  formData.append("initial", "-");
-  formData.append("final", "uo");
-  formData.append("tone", "3rd tone");
+  formData.append("q_id", "247");
+  formData.append("initial", "ni");
+  formData.append("tone", "3");
 
   const req = new Request("http://localhost/reading/我是印尼人", {
     method: "POST",
@@ -50,38 +49,40 @@ export const postAnswer = async () => {
   const resp = await handler(req, CONNECTION).then((value) => {
     const url = new URL(value.headers.get("location")!);
     assertEquals(value.status, 303);
-    assertExists(url.searchParams.get("question"));
-    assertExists(url.searchParams.get("answer"));
+    assertExists(url.searchParams.get("q_id"));
+    assertExists(url.searchParams.get("a"));
     return handler(new Request(url!));
   });
   const text = await resp.text();
 
   assert(resp.ok);
-  assert(text.includes("<b>Solution:</b>"));
+  assert(text.includes("<b>The solution:</b> nǐ"));
 };
 
 export const getCorrectState = async () => {
   const req = new Request(
-    "http://localhost/reading/我是印尼人?question=我&answer=wǒ",
+    "http://localhost/reading/中国银行?q_id=5573&a=xíng",
   );
   const resp = await handler(req, CONNECTION);
   const text = await resp.text();
 
+  console.log(resp.status);
+
   assert(resp.ok);
   assert(
-    text.includes('<div class="h-screen content-center bg-green-300 ">'),
+    text.includes('<div class="h-screen content-center bg-green-300">'),
   );
 };
 
 export const getFalseState = async () => {
   const req = new Request(
-    "http://localhost/reading/我是印尼人?question=人&answer=nǐ",
+    "http://localhost/reading/中国银行?q_id=5573&a=hǎo",
   );
   const resp = await handler(req, CONNECTION);
   const text = await resp.text();
 
   assert(resp.ok);
   assert(
-    text.includes('<div class="h-screen content-center bg-red-300 ">'),
+    text.includes('<div class="h-screen content-center bg-red-300">'),
   );
 };
