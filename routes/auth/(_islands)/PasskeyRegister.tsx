@@ -14,14 +14,12 @@ export default function PasskeyRegister() {
 				method: "POST",
 			});
 			const regOptions = await serverRegistration.json();
-			console.log("[Client] Registration Options:", regOptions);
 
 			// Step 2: Create passkey credential using WebAuthn API
 			const clientRegistration = await startRegistration({
 				optionsJSON: regOptions as PublicKeyCredentialCreationOptionsJSON,
 				useAutoRegister: false,
 			});
-			console.log("[Client] Registration Result:", clientRegistration);
 
 			// Step 3: Verify the created credential with server
 			const verification = await fetch("/api/auth/biometric/verify-register", {
@@ -30,8 +28,8 @@ export default function PasskeyRegister() {
 				body: JSON.stringify({ registration: clientRegistration }),
 			});
 			if (verification.redirected) globalThis.location.href = verification.url;
-		} catch (e) {
-			console.error("[Client] Registration error:", e);
+		} catch (err) {
+			return err;
 		} finally {
 			loadingState.value = false;
 		}
