@@ -180,7 +180,6 @@ export const getSignUp = async (
 		});
 
 		headers.set("location", `/profile`);
-		console.log("verify headers: ", headers);
 		return new Response(null, { status: 303, headers });
 	}
 
