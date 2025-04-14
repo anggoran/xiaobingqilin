@@ -24,7 +24,7 @@ const ENV: ENVInterface = {
 	SURREAL_SYSTEM_PASS: Deno.env.get("SURREAL_SYSTEM_PASS") ?? "",
 };
 
-if (Deno.env.get("DENO_ENV") === "production") {
+if (Deno.env.get("DENO_DEPLOYMENT_ID")) {
 	Object.assign(ENV, {
 		SMTP_AUTH: {
 			user: Deno.env.get("SMTP_USER") ?? "",
