@@ -1,6 +1,6 @@
 {
   "version": "v0.6",
-  "lock": true,
+  "lock": false,
   "exclude": ["**/_fresh/*"],
   "tasks": {
     "dev-db": "surreal start memory --bind 0.0.0.0:5000 --import-file .surreal/init.surql --allow-experimental bearer_access",
