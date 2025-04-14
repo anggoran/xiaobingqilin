@@ -1,12 +1,7 @@
 {
   "version": "v0.6",
   "lock": true,
-  "nodeModulesDir": "auto",
   "exclude": ["**/_fresh/*"],
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
-  },
   "tasks": {
     "dev-db": "surreal start memory --bind 0.0.0.0:5000 --import-file .surreal/init.surql --allow-experimental bearer_access",
     "dev-mail": "mailpit",
@@ -56,5 +51,10 @@
     "tailwindcss": "npm:tailwindcss@3.4.1",
     "tailwindcss/": "npm:/tailwindcss@3.4.1/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.4.1/plugin.js"
-  }
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
+  "nodeModulesDir": true
 }
