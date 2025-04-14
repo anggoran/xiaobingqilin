@@ -1,7 +1,6 @@
 {
   "version": "v0.6",
   "lock": false,
-  "exclude": ["**/_fresh/*"],
   "tasks": {
     "dev-db": "surreal start memory --bind 0.0.0.0:5000 --import-file .surreal/init.surql --allow-experimental bearer_access",
     "dev-mail": "mailpit",
@@ -9,7 +8,6 @@
     "dev": {
       "dependencies": ["dev-db", "dev-mail", "dev-web"]
     },
-    "test-unit": "",
     "test-integration": "deno test -A",
     "test-e2e": "npx playwright test --headed",
     "test": {
@@ -33,6 +31,7 @@
       "tags": ["fresh", "recommended"]
     }
   },
+  "exclude": ["**/_fresh/*"],
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.7.3/",
     "$std/": "https://deno.land/std@0.224.0/",
