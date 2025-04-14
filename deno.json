@@ -5,14 +5,10 @@
     "dev-db": "surreal start memory --bind 0.0.0.0:5000 --import-file .surreal/init.surql --allow-experimental bearer_access",
     "dev-mail": "mailpit",
     "dev-web": "deno run -A --env-file=.env.development --watch=static/,routes/ dev.ts",
-    "dev": {
-      "dependencies": ["dev-db", "dev-mail", "dev-web"]
-    },
+    "dev": "deno task dev-db && deno task dev-mail && deno task dev-web",
     "test-integration": "deno test -A",
     "test-e2e": "npx playwright test --headed",
-    "test": {
-      "dependencies": ["test-unit", "test-integration", "test-e2e"]
-    },
+    "test": "deno task test-integration && deno task test-e2e",
     "update": "brew upgrade deno && deno run -A -r https://fresh.deno.dev/update .",
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts"
