@@ -4,60 +4,85 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $_middleware from "./routes/_middleware.ts";
+import * as $api_auth_biometric_enter from "./routes/api/auth/biometric/enter.ts";
+import * as $api_auth_biometric_register from "./routes/api/auth/biometric/register.ts";
+import * as $api_auth_biometric_verify_enter from "./routes/api/auth/biometric/verify-enter.ts";
+import * as $api_auth_biometric_verify_register from "./routes/api/auth/biometric/verify-register.ts";
+import * as $api_auth_magic_send from "./routes/api/auth/magic/send.ts";
+import * as $api_auth_signout from "./routes/api/auth/signout.ts";
 import * as $api_latin from "./routes/api/latin.ts";
 import * as $api_word from "./routes/api/word.ts";
-import * as $greet_name_ from "./routes/greet/[name].tsx";
+import * as $auth_signin from "./routes/auth/signin.tsx";
+import * as $auth_signup from "./routes/auth/signup.tsx";
 import * as $hanzi_id_ from "./routes/hanzi/[id].tsx";
 import * as $hanzi_index from "./routes/hanzi/index.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $listening_index from "./routes/listening/index.tsx";
+import * as $profile_index from "./routes/profile/index.tsx";
 import * as $reading_quiz_ from "./routes/reading/[quiz].tsx";
 import * as $reading_index from "./routes/reading/index.tsx";
 import * as $word_index from "./routes/word/index.tsx";
 import * as $writing_quiz_ from "./routes/writing/[quiz].tsx";
 import * as $writing_index from "./routes/writing/index.tsx";
 import * as $Autocomplete from "./islands/Autocomplete.tsx";
-import * as $Counter from "./islands/Counter.tsx";
 import * as $Dropdown from "./islands/Dropdown.tsx";
 import * as $InfiniteWords from "./islands/InfiniteWords.tsx";
-import * as $Label from "./islands/Label.tsx";
-import * as $Menu from "./islands/Menu.tsx";
+import * as $SignOut from "./islands/SignOut.tsx";
 import * as $SolutionWriter from "./islands/SolutionWriter.tsx";
 import * as $SoundButton from "./islands/SoundButton.tsx";
+import * as $auth_islands_AuthCard from "./routes/auth/(_islands)/AuthCard.tsx";
+import * as $auth_islands_PasskeyEnter from "./routes/auth/(_islands)/PasskeyEnter.tsx";
 import * as $hanzi_islands_HanziTable from "./routes/hanzi/(_islands)/HanziTable.tsx";
+import * as $profile_islands_PasskeyRegister from "./routes/profile/(_islands)/PasskeyRegister.tsx";
+import * as $profile_islands_ProfileForm from "./routes/profile/(_islands)/ProfileForm.tsx";
 import * as $writing_islands_QuizWriter from "./routes/writing/(_islands)/QuizWriter.tsx";
-import { type Manifest } from "$fresh/server.ts";
+import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
-  routes: {
-    "./routes/_404.tsx": $_404,
-    "./routes/_app.tsx": $_app,
-    "./routes/api/latin.ts": $api_latin,
-    "./routes/api/word.ts": $api_word,
-    "./routes/greet/[name].tsx": $greet_name_,
-    "./routes/hanzi/[id].tsx": $hanzi_id_,
-    "./routes/hanzi/index.tsx": $hanzi_index,
-    "./routes/index.tsx": $index,
-    "./routes/listening/index.tsx": $listening_index,
-    "./routes/reading/[quiz].tsx": $reading_quiz_,
-    "./routes/reading/index.tsx": $reading_index,
-    "./routes/word/index.tsx": $word_index,
-    "./routes/writing/[quiz].tsx": $writing_quiz_,
-    "./routes/writing/index.tsx": $writing_index,
-  },
-  islands: {
-    "./islands/Autocomplete.tsx": $Autocomplete,
-    "./islands/Counter.tsx": $Counter,
-    "./islands/Dropdown.tsx": $Dropdown,
-    "./islands/InfiniteWords.tsx": $InfiniteWords,
-    "./islands/Label.tsx": $Label,
-    "./islands/Menu.tsx": $Menu,
-    "./islands/SolutionWriter.tsx": $SolutionWriter,
-    "./islands/SoundButton.tsx": $SoundButton,
-    "./routes/hanzi/(_islands)/HanziTable.tsx": $hanzi_islands_HanziTable,
-    "./routes/writing/(_islands)/QuizWriter.tsx": $writing_islands_QuizWriter,
-  },
-  baseUrl: import.meta.url,
+	routes: {
+		"./routes/_404.tsx": $_404,
+		"./routes/_app.tsx": $_app,
+		"./routes/_middleware.ts": $_middleware,
+		"./routes/api/auth/biometric/enter.ts": $api_auth_biometric_enter,
+		"./routes/api/auth/biometric/register.ts": $api_auth_biometric_register,
+		"./routes/api/auth/biometric/verify-enter.ts":
+			$api_auth_biometric_verify_enter,
+		"./routes/api/auth/biometric/verify-register.ts":
+			$api_auth_biometric_verify_register,
+		"./routes/api/auth/magic/send.ts": $api_auth_magic_send,
+		"./routes/api/auth/signout.ts": $api_auth_signout,
+		"./routes/api/latin.ts": $api_latin,
+		"./routes/api/word.ts": $api_word,
+		"./routes/auth/signin.tsx": $auth_signin,
+		"./routes/auth/signup.tsx": $auth_signup,
+		"./routes/hanzi/[id].tsx": $hanzi_id_,
+		"./routes/hanzi/index.tsx": $hanzi_index,
+		"./routes/index.tsx": $index,
+		"./routes/listening/index.tsx": $listening_index,
+		"./routes/profile/index.tsx": $profile_index,
+		"./routes/reading/[quiz].tsx": $reading_quiz_,
+		"./routes/reading/index.tsx": $reading_index,
+		"./routes/word/index.tsx": $word_index,
+		"./routes/writing/[quiz].tsx": $writing_quiz_,
+		"./routes/writing/index.tsx": $writing_index,
+	},
+	islands: {
+		"./islands/Autocomplete.tsx": $Autocomplete,
+		"./islands/Dropdown.tsx": $Dropdown,
+		"./islands/InfiniteWords.tsx": $InfiniteWords,
+		"./islands/SignOut.tsx": $SignOut,
+		"./islands/SolutionWriter.tsx": $SolutionWriter,
+		"./islands/SoundButton.tsx": $SoundButton,
+		"./routes/auth/(_islands)/AuthCard.tsx": $auth_islands_AuthCard,
+		"./routes/auth/(_islands)/PasskeyEnter.tsx": $auth_islands_PasskeyEnter,
+		"./routes/hanzi/(_islands)/HanziTable.tsx": $hanzi_islands_HanziTable,
+		"./routes/profile/(_islands)/PasskeyRegister.tsx":
+			$profile_islands_PasskeyRegister,
+		"./routes/profile/(_islands)/ProfileForm.tsx": $profile_islands_ProfileForm,
+		"./routes/writing/(_islands)/QuizWriter.tsx": $writing_islands_QuizWriter,
+	},
+	baseUrl: import.meta.url,
 } satisfies Manifest;
 
 export default manifest;
