@@ -9,6 +9,7 @@ import { ENV } from "../../../../utils/config.ts";
 
 export const handler: Handlers = {
 	async POST(req) {
+		const url = new URL(req.url);
 		const headers = new Headers(req.headers);
 		const body = await req.json();
 
@@ -39,7 +40,8 @@ export const handler: Handlers = {
 			const baseURL = `${protocol}://${destination}`;
 
 			// Read and customize email template
-			const content = await Deno.readTextFile("./static/email.html");
+			const res = await fetch(url.origin + "/email.html");
+			const content = await res.text();
 			const link = `${baseURL}/auth/${accessType}?verify=${base64url_token}`;
 			const html = content.replace("{{link_to_app}}", link);
 
