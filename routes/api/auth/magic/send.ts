@@ -1,11 +1,11 @@
 import { Handlers } from "$fresh/server.ts";
 import { Surreal } from "@surrealdb/surrealdb";
-import nodemailer from "npm:nodemailer@6.10.0";
 import { AuthServiceImpl } from "../../../../services/auth.ts";
 import { generateFisherToken } from "../../../../utils/fisher-token.ts";
 import { encodeBase64Url } from "@std/encoding";
 import { VerifierRequest } from "../../../../models/auth.ts";
 import { ENV } from "../../../../utils/config.ts";
+import { sendMail } from "../../../../services/email.ts";
 
 export const handler: Handlers = {
 	async POST(req) {
@@ -45,19 +45,8 @@ export const handler: Handlers = {
 			const link = `${baseURL}/auth/${accessType}?verify=${base64url_token}`;
 			const html = content.replace("{{link_to_app}}", link);
 
-			const transporter = nodemailer.createTransport({
-				host: ENV.SMTP_HOST,
-				port: ENV.SMTP_PORT,
-				secure: ENV.SMTP_SECURITY,
-				auth: ENV.SMTP_AUTH,
-			});
-
-			await transporter.sendMail({
-				from: ENV.SMTP_SENDER,
-				to: [email],
-				subject: "Please continue your login!",
-				html,
-			});
+			// Send the email
+			await sendMail(email, html);
 		} catch (e) {
 			return new Response("Email error: " + e, { status: 500 });
 		} finally {
