@@ -6,6 +6,7 @@ import { constructCookie } from "../utils/cookie.ts";
 import { AuthResponse, AuthServiceImpl } from "../services/auth.ts";
 import { decodeBase64Url } from "@std/encoding/base64url";
 import { ENV } from "../utils/config.ts";
+import { postSendMail } from "./api/magic.ts";
 
 export const getSignIn = async (
 	req: Request,
@@ -97,7 +98,7 @@ export const postSignIn = async (
 		if (!countResult) return ctx.render({ error: "⚠: user isn't exist." });
 
 		const accessType = "signin";
-		const sendResult = await fetch(url.origin + "/api/auth/magic/send", {
+		const mailRequest = new Request(url.origin + "/api/auth/magic/send", {
 			method: "POST",
 			headers: {
 				"destination": headers.get("x-forwarded-host") ?? url.host,
@@ -105,6 +106,7 @@ export const postSignIn = async (
 			},
 			body: JSON.stringify({ accessType, email, device: { mac, ip } }),
 		});
+		const sendResult = await postSendMail(mailRequest);
 		if (!sendResult.ok) return ctx.render({ error: "⚠: email is not sent." });
 
 		challenge = await sendResult.text();
@@ -215,7 +217,7 @@ export const postSignUp = async (
 		if (countResult) return ctx.render({ error: "⚠: email is already exist." });
 
 		const accessType = "signup";
-		const sendResult = await fetch(url.origin + "/api/auth/magic/send", {
+		const mailRequest = new Request(url.origin + "/api/auth/magic/send", {
 			method: "POST",
 			headers: {
 				"destination": headers.get("x-forwarded-host") ?? url.host,
@@ -223,6 +225,7 @@ export const postSignUp = async (
 			},
 			body: JSON.stringify({ accessType, email, device: { mac, ip } }),
 		});
+		const sendResult = await postSendMail(mailRequest);
 		if (!sendResult.ok) return ctx.render({ error: "⚠: email is not sent." });
 
 		challenge = await sendResult.text();
