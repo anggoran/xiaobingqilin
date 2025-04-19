@@ -1,11 +1,10 @@
 import * as path from "$std/path/mod.ts";
 import { encodeBase64Url } from "@std/encoding/base64url";
-import { Surreal } from "https://jsr.io/@surrealdb/surrealdb/1.2.1/src/surreal.ts";
+import { Surreal } from "@surrealdb/surrealdb";
 import { VerifierRequest } from "../../models/auth.ts";
 import { AuthServiceImpl } from "../../services/auth.ts";
 import { sendMail } from "../../services/email.ts";
 import { ENV } from "../../utils/config.ts";
-import { generateFisherToken } from "../../utils/fisher-token.ts";
 
 export const postSendMail = async (
 	req: Request,
@@ -15,23 +14,22 @@ export const postSendMail = async (
 
 	const { value, error } = VerifierRequest.validate(body);
 	if (error) return new Response("Invalid request.", { status: 400 });
-	const { accessType, email, device: { mac, ip } } = value;
+	const { accessType, email, challenge, device: { mac, ip } } = value;
+
+	const token = req.headers.get("Authorization");
+	if (!token) return new Response("Unauthorized.", { status: 401 });
 
 	const db = new Surreal();
 	const auth = new AuthServiceImpl(db);
-
-	let challenge: string;
+	await db.connect(ENV.SURREAL_DB_URL);
+	await db.authenticate(token);
 
 	try {
-		await db.connect(ENV.SURREAL_DB_URL);
-		await auth.accessSystem();
-
 		const limit = await auth.countVerifier(email, { mac, ip });
 		if (limit && limit >= 5) {
 			return new Response("Request exceeded.", { status: 429 });
 		}
 
-		challenge = generateFisherToken(email);
 		const base64url_token = encodeBase64Url(challenge);
 
 		// Determine the base URL based on the destination header
