@@ -1,4 +1,5 @@
 const ENV = {
+	FUNCTION_URL: Deno.env.get("FUNCTION_URL") ?? "",
 	SMTP_URL: Deno.env.get("SMTP_URL") ?? "",
 	SMTP_KEY: Deno.env.get("SMTP_KEY") ?? "",
 	SMTP_SENDER_NAME: Deno.env.get("SMTP_SENDER_NAME") ?? "",
