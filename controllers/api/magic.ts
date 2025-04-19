@@ -16,15 +16,13 @@ export const postSendMail = async (
 	if (error) return new Response("Invalid request.", { status: 400 });
 	const { accessType, email, challenge, device: { mac, ip } } = value;
 
-	const token = req.headers.get("Authorization");
-	if (!token) return new Response("Unauthorized.", { status: 401 });
-
 	const db = new Surreal();
 	const auth = new AuthServiceImpl(db);
-	await db.connect(ENV.SURREAL_DB_URL);
-	await db.authenticate(token);
 
 	try {
+		await db.connect(ENV.SURREAL_DB_URL);
+		await auth.accessSystem();
+
 		const limit = await auth.countVerifier(email, { mac, ip });
 		if (limit && limit >= 5) {
 			return new Response("Request exceeded.", { status: 429 });

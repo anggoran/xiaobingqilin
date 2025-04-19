@@ -89,7 +89,7 @@ export const postSignIn = async (
 	const db = new Surreal();
 	const auth = new AuthServiceImpl(db);
 	await db.connect(ENV.SURREAL_DB_URL);
-	const token = await auth.accessSystem();
+	await auth.accessSystem();
 
 	let countResult: number | undefined;
 
@@ -105,7 +105,6 @@ export const postSignIn = async (
 			type: "send-signin-mail",
 			value: {
 				redirect,
-				token,
 				email,
 				challenge,
 				device: { mac, ip },
@@ -210,7 +209,7 @@ export const postSignUp = async (
 	const db = new Surreal();
 	const auth = new AuthServiceImpl(db);
 	await db.connect(ENV.SURREAL_DB_URL);
-	const token = await auth.accessSystem();
+	await auth.accessSystem();
 
 	try {
 		countResult = await auth.countUser(email);
@@ -224,7 +223,6 @@ export const postSignUp = async (
 			type: "send-signup-mail",
 			value: {
 				redirect,
-				token,
 				email,
 				challenge,
 				device: { mac, ip },
