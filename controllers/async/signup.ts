@@ -15,5 +15,6 @@ export const sendSignUpMail = async (value: any) => {
 			device,
 		}),
 	});
+	console.log("[FETCH] task is fetched!");
 	if (!res.ok) console.error("Error:", res.status, res.statusText);
 };
