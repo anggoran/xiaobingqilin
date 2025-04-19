@@ -43,7 +43,6 @@ export const postSendMail = async (
 
 		// Send the email
 		await sendMail(email, html);
-		console.log("[FUNCTION] task is fired!");
 	} catch (e) {
 		return new Response("Email error: " + e, { status: 500 });
 	} finally {

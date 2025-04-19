@@ -228,7 +228,6 @@ export const postSignUp = async (
 				device: { mac, ip },
 			},
 		});
-		console.log("[ROUTE] task is enqueued!");
 
 		await auth.createVerifier({
 			email,
