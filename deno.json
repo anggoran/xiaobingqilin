@@ -11,7 +11,7 @@
     "test-e2e": "npx playwright test --headed",
     "test": "deno task test-integration && deno task test-e2e",
     "build": "deno run -A --unstable-kv dev.ts build",
-    "preview": "deno run -A --env-file=.env.production main.ts"
+    "preview": "deno run -A --unstable-kv --env-file=.env.production main.ts"
   },
   "fmt": {
     "options": {
@@ -50,6 +50,5 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
-  },
-  "nodeModulesDir": true
+  }
 }
