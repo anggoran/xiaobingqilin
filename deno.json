@@ -2,16 +2,16 @@
   "version": "v0.6",
   "lock": false,
   "tasks": {
+    "update": "brew upgrade deno && deno run -A -r https://fresh.deno.dev/update .",
     "dev-db": "surreal start memory --bind 0.0.0.0:5000 --import-file .surreal/init.surql --allow-experimental bearer_access",
     "dev-mail": "mailpit",
-    "dev-web": "deno run -A --env-file=.env.development --watch=static/,routes/ dev.ts",
+    "dev-web": "deno run -A --unstable-kv --env-file=.env.development --watch=static/,routes/ dev.ts",
     "dev": "deno task dev-db && deno task dev-mail && deno task dev-web",
     "test-integration": "deno test -A",
     "test-e2e": "npx playwright test --headed",
     "test": "deno task test-integration && deno task test-e2e",
-    "update": "brew upgrade deno && deno run -A -r https://fresh.deno.dev/update .",
-    "build": "deno run -A dev.ts build",
-    "preview": "deno run -A main.ts"
+    "build": "deno run -A --unstable-kv dev.ts build",
+    "preview": "deno run -A --env-file=.env.production main.ts"
   },
   "fmt": {
     "options": {
@@ -51,5 +51,5 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
   },
-  "nodeModulesDir": true
+  "nodeModulesDir": "auto"
 }
