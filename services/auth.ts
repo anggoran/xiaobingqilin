@@ -19,7 +19,7 @@ type AccessType = "signup" | "signin";
 type Device = { agent: string; mac: string; ip: string };
 
 abstract class AuthService {
-	abstract accessSystem(): Promise<void>;
+	abstract accessSystem(): Promise<string>;
 	abstract countUser(email: string | undefined): Promise<number | undefined>;
 	abstract countVerifier(
 		email: string,
@@ -63,7 +63,7 @@ export class AuthServiceImpl implements AuthService {
 	}
 
 	async accessSystem() {
-		await this.db.signin({
+		return await this.db.signin({
 			namespace: "webapp",
 			database: "dev",
 			username: ENV.SURREAL_SYSTEM_USER,
