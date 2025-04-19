@@ -2,7 +2,8 @@
 
 import dev from "$fresh/dev.ts";
 import config from "./fresh.config.ts";
+import { backgroundTask } from "./utils/queue.ts";
 
-import "$std/dotenv/load.ts";
+if (!Deno.args.includes("build")) backgroundTask();
 
 await dev(import.meta.url, "./main.ts", config);

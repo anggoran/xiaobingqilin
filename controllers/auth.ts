@@ -6,6 +6,9 @@ import { constructCookie } from "../utils/cookie.ts";
 import { AuthResponse, AuthServiceImpl } from "../services/auth.ts";
 import { decodeBase64Url } from "@std/encoding/base64url";
 import { ENV } from "../utils/config.ts";
+import { generateFisherToken } from "../utils/fisher-token.ts";
+import { denokv } from "../utils/queue.ts";
+import { base64URLToString } from "../utils/converter.ts";
 
 export const getSignIn = async (
 	req: Request,
@@ -77,7 +80,7 @@ export const postSignIn = async (
 	const form = await req.formData();
 	const email = form.get("usermail")!.toString();
 
-	const agent = req.headers.get("user-agent");
+	const agent = headers.get("user-agent");
 	if (!agent) return new Response("Invalid page visit.", { status: 400 });
 	const { mac, address: ip } = Deno.networkInterfaces().find((e) => {
 		return e.family === "IPv4" && e.mac !== "00:00:00:00:00:00";
@@ -85,29 +88,28 @@ export const postSignIn = async (
 
 	const db = new Surreal();
 	const auth = new AuthServiceImpl(db);
+	await db.connect(ENV.SURREAL_DB_URL);
+	await auth.accessSystem();
 
 	let countResult: number | undefined;
-	let challenge: string;
 
 	try {
-		await db.connect(ENV.SURREAL_DB_URL);
-		await auth.accessSystem();
-
 		countResult = await auth.countUser(email);
 		if (!countResult) return ctx.render({ error: "⚠: user isn't exist." });
 
 		const accessType = "signin";
-		const sendResult = await fetch(url.origin + "/api/auth/magic/send", {
-			method: "POST",
-			headers: {
-				"destination": headers.get("x-forwarded-host") ?? url.host,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ accessType, email, device: { mac, ip } }),
-		});
-		if (!sendResult.ok) return ctx.render({ error: "⚠: email is not sent." });
+		const challenge = generateFisherToken(email);
+		const redirect = headers.get("x-forwarded-host") ?? url.host;
 
-		challenge = await sendResult.text();
+		await denokv.enqueue({
+			type: "send-signin-mail",
+			value: {
+				redirect,
+				email,
+				challenge,
+				device: { mac, ip },
+			},
+		});
 
 		await auth.createVerifier({
 			email,
@@ -122,7 +124,8 @@ export const postSignIn = async (
 		await db.close();
 	}
 
-	return Response.redirect(url + "?email=" + email, 303);
+	headers.set("location", "/auth/signin?email=" + email);
+	return new Response(null, { status: 303, headers });
 };
 
 export const getSignUp = async (
@@ -139,7 +142,7 @@ export const getSignUp = async (
 		const auth = new AuthServiceImpl(db);
 		let registerResult: AuthResponse;
 
-		const challenge = new TextDecoder().decode(decodeBase64Url(challengeURL));
+		const challenge = base64URLToString(challengeURL);
 
 		try {
 			await db.connect(ENV.SURREAL_DB_URL);
@@ -201,31 +204,30 @@ export const postSignUp = async (
 		return e.family === "IPv4" && e.mac !== "00:00:00:00:00:00";
 	})!;
 
+	let countResult: number | undefined;
+
 	const db = new Surreal();
 	const auth = new AuthServiceImpl(db);
-
-	let countResult: number | undefined;
-	let challenge: string;
+	await db.connect(ENV.SURREAL_DB_URL);
+	await auth.accessSystem();
 
 	try {
-		await db.connect(ENV.SURREAL_DB_URL);
-		await auth.accessSystem();
-
 		countResult = await auth.countUser(email);
 		if (countResult) return ctx.render({ error: "⚠: email is already exist." });
 
 		const accessType = "signup";
-		const sendResult = await fetch(url.origin + "/api/auth/magic/send", {
-			method: "POST",
-			headers: {
-				"destination": headers.get("x-forwarded-host") ?? url.host,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ accessType, email, device: { mac, ip } }),
-		});
-		if (!sendResult.ok) return ctx.render({ error: "⚠: email is not sent." });
+		const challenge = generateFisherToken(email);
+		const redirect = headers.get("x-forwarded-host") ?? url.host;
 
-		challenge = await sendResult.text();
+		await denokv.enqueue({
+			type: "send-signup-mail",
+			value: {
+				redirect,
+				email,
+				challenge,
+				device: { mac, ip },
+			},
+		});
 
 		await auth.createVerifier({
 			email,
@@ -236,8 +238,6 @@ export const postSignUp = async (
 		});
 	} catch (e) {
 		return new Response("Auth error: " + e, { status: 500 });
-	} finally {
-		await db.close();
 	}
 
 	headers.set("location", "/auth/signup?email=" + email);
